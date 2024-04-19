@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  flask-app:
+    container_name: flask_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - internet
+networks:
+  internet:
+    name: internet
+    driver: bridge
+
