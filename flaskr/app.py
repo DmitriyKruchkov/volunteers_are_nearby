@@ -1,11 +1,12 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
-
+from datetime import datetime
 from data import db_session
 from config import SECRET_KEY, HOST, PORT, DEBUG
 from form.loginform import LoginForm
 from data.users import User
 from form.registerform import RegisterForm
+from data.events import Event
 
 app = Flask(__name__, template_folder="templates")
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -39,10 +40,12 @@ def login():
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
-    # Сделать позже отображение мероприятий
-    # news = db_sess.query(News).filter(News.is_private != True)
-    # return render_template("index.html", news=news)
-    return render_template("index.html")
+    current_time = datetime.now()
+    query = (db_sess.query(Event.id, Event.event_name, Event.date_of_start, Event.picture_path)
+             .filter(Event.date_of_start > current_time).order_by(Event.date_of_start))
+    executed_query = query.all()
+    events = [elem._asdict() for elem in executed_query]
+    return render_template("index.html", events=events)
 
 
 @app.route('/register', methods=['GET', 'POST'])
