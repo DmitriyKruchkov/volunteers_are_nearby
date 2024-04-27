@@ -22,6 +22,12 @@ def load_user(user_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+        Обработка запросов на авторизацию. Проверка корректности логина и пароля.
+        Если данные верны, то происходит вход в систему.
+
+        :return: рендеринг шаблона с результатом авторизации
+        """
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -39,6 +45,11 @@ def login():
 
 @app.route("/")
 def index():
+    """
+        Главная страница приложения. Возвращает шаблон главной страницы.
+
+        :return: шаблон главной страницы
+        """
     db_sess = db_session.create_session()
     current_time = datetime.now()
     query = (db_sess.query(Event.id, Event.event_name, Event.date_of_start, Event.picture_path)
@@ -50,6 +61,12 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
+    """
+        Регистрация нового пользователя. Валидация формы регистрации.
+        Создание нового пользователя в базе данных при успешной валидации.
+
+        :return: шаблон формы регистрации с сообщением об ошибке, если она есть
+        """
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -78,6 +95,11 @@ def reqister():
 @app.route('/logout')
 @login_required
 def logout():
+    """
+        Выход из системы. Деавторизация пользователя.
+
+        :return: редирект на главную страницу
+        """
     logout_user()
     return redirect("/")
 
