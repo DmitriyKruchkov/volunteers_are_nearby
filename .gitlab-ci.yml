@@ -7,9 +7,6 @@ stages:
   - notify
 
 before_script:
-  - ls
-  - apt install -y python3-pip
-  - pip install python3-poetry
   - poetry shell
   - poetry install
 
