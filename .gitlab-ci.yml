@@ -33,7 +33,7 @@ documentation:
     - python3 create_all_docs.py
   artifacts:
     paths:
-      $CI_PROJECT_DIR/docs/
+      - $CI_PROJECT_DIR/docs/
   rules:
     - allow_failure: true
 
