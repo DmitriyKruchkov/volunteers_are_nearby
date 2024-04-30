@@ -9,7 +9,7 @@ stages:
 before_script:
   - ls
   - apt install -y python3-pip
-  - pip install poetry
+  - pip install python3-poetry
   - poetry shell
   - poetry install
 
@@ -33,7 +33,7 @@ documentation:
     - python3 create_all_docs.py
   artifacts:
     paths:
-      $CI_PROJECT_DIR/docs/
+      - $CI_PROJECT_DIR/docs/
   rules:
     - allow_failure: true
 
