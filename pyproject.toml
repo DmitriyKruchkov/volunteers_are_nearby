@@ -11,6 +11,8 @@ Flask = "^3.0.2"
 sqlalchemy = "^2.0.29"
 flask-login = "^0.6.3"
 flask-wtf = "^1.2.1"
+ruff = "^0.4.2"
+click = "^8.1.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
@@ -20,3 +22,7 @@ selenium = "^4.19.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+select = [ "E", "F", "W" ]
+ignore = ["F401"]

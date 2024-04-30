@@ -1,0 +1,46 @@
+stages:
+  - linting
+  - testing
+  - documentation
+  - delivery
+  - deploy
+  - notify
+
+before_script:
+  - ls
+  - apt install -y python3-pip
+  - pip install poetry
+  - poetry shell
+  - poetry install
+
+linting:
+  stage: linting
+  script:
+    - ruff check --fix
+  artifacts:
+    paths:
+      - flaskr/
+
+testing:
+  stage: testing
+  script:
+    - pytest
+
+documentation:
+  stage: documentation
+  script:
+    - cd docs
+    - python3 create_all_docs.py
+  artifacts:
+    paths:
+      $CI_PROJECT_DIR/docs/
+  rules:
+    - allow_failure: true
+
+
+deploy:
+  stage: deploy
+  script:
+    - docker-compose up -d
+    #  only:
+    # - master
