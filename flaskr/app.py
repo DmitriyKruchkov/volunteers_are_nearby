@@ -53,8 +53,12 @@ def index():
         """
     db_sess = db_session.create_session()
     current_time = datetime.now()
-    query = (db_sess.query(Event.id, Event.event_name, Event.date_of_start, Event.picture_path)
-             .filter(Event.date_of_start > current_time).order_by(Event.date_of_start))
+    query = (db_sess.query(Event.id,
+                           Event.event_name,
+                           Event.date_of_start,
+                           Event.picture_path)
+             .filter(Event.date_of_start > current_time)
+             .order_by(Event.date_of_start))
     executed_query = query.all()
     events = [elem._asdict() for elem in executed_query]
     return render_template("index.html", events=events)
@@ -75,7 +79,8 @@ def reqister():
                                    form=form,
                                    message="Пароли не совпадают")
         db_sess = db_session.create_session()
-        if db_sess.query(User).filter((User.email == form.email.data) | (User.nickname == form.nickname.data)).first():
+        if db_sess.query(User).filter((User.email == form.email.data) |
+                                      (User.nickname == form.nickname.data)).first():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть")
