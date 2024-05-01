@@ -61,7 +61,7 @@ deploy:
     paths:
       - log-CI
   only:
-   - feature_12
+   - main
 
 notify:
   stage: notify
