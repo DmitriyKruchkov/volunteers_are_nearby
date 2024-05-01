@@ -6,6 +6,8 @@ stages:
   - notify
 
 before_script:
+  - python3 -m venv venv
+  - source venv/bin/activate
   - pip install poetry
   - poetry install
 
