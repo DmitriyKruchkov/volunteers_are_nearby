@@ -2,14 +2,10 @@ stages:
   - linting
   - testing
   - documentation
-  - delivery
   - deploy
   - notify
 
 before_script:
-  - python3 -m venv venv
-  - source venv/bin/activate
-  - pip install poetry
   - poetry shell
   - poetry install
 
@@ -41,6 +37,13 @@ documentation:
 deploy:
   stage: deploy
   script:
-    - docker compose up -d
+    - docker-compose down
+    - docker-compose up -d
     #  only:
     # - master
+
+notify:
+  stage: notify
+  script:
+    - sh ci-notify.sh $CI_JOB_STATUS
+  when: always
