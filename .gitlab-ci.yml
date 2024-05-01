@@ -60,8 +60,8 @@ deploy:
   artifacts:
     paths:
       - log-CI
-    #  only:
-    # - master
+  only:
+   - feature_12
 
 notify:
   stage: notify
