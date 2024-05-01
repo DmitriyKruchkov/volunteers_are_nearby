@@ -6,6 +6,7 @@ stages:
   - notify
 
 before_script:
+  - python -m venv venv
   - poetry shell
   - poetry install
 
