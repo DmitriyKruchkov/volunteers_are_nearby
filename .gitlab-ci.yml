@@ -67,5 +67,5 @@ notify:
   stage: notify
   script:
     - cat log-CI
-    - cat log-CI | sh ci-notify.sh
+    - sh ci-notify.sh < cat log-CI
   when: always
