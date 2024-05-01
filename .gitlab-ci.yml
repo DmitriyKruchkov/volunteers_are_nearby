@@ -11,33 +11,37 @@ before_script:
   - pip install poetry
   - poetry install
 
+
 linting:
   stage: linting
   script:
     - ruff check --fix
   after_script:
-    - echo "$CI_JOB_NAME:\$CI_JOB_STATUS" > log-CI
+    - echo "$CI_JOB_NAME is $CI_JOB_STATUS" > log-CI
   artifacts:
     paths:
       - flaskr/
       - log-CI
+
 
 testing:
   stage: testing
   script:
     - pytest
   after_script:
-    - echo "$CI_JOB_NAME:\$CI_JOB_STATUS" >> log-CI
+    - echo "$CI_JOB_NAME $CI_JOB_STATUS" >> log-CI
   artifacts:
     paths:
       - log-CI
+
+
 documentation:
   stage: documentation
   script:
     - cd docs
     - python3 create_all_docs.py
   after_script:
-    - echo "$CI_JOB_NAME:\$CI_JOB_STATUS" >> log-CI
+    - echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
   artifacts:
     paths:
       - $CI_PROJECT_DIR/docs/
@@ -52,7 +56,7 @@ deploy:
     - docker-compose down
     - docker-compose up -d
   after_script:
-    - echo "$CI_JOB_NAME:\$CI_JOB_STATUS" >> log-CI
+    - echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
   artifacts:
     paths:
       - log-CI
