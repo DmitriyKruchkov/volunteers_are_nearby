@@ -16,13 +16,10 @@ jobs:
         run: python3 -m venv venv
 
       - name: Test
-        run: source venv/bin/activate
-
-      - name: Test
-        run: pip install poetry
-
-      - name: Test
-        run: poetry install
+        run: | 
+          source venv/bin/activate
+          pip install poetry
+          poetry install
 
       - name: Test
         uses: actions/upload-artifact@v4
@@ -115,7 +112,7 @@ jobs:
         with:
             name: logfile
             path: log-CI
-            
+
       - name: Test
         uses: actions/upload-artifact@v4
         with:
