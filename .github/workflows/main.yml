@@ -61,7 +61,7 @@ jobs:
           ls
           source venv/bin/activate
           pytest
-          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
+          echo "$GITHUB_JOB is ok" >> ./log-CI
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -100,7 +100,7 @@ jobs:
           cd ..
       - name: Log job status
         run: |
-          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
+          echo "$GITHUB_JOB is ok" >> ./log-CI
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -139,7 +139,7 @@ jobs:
           docker-compose up -d
       - name: Log job status
         run: |
-          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
+          echo "$GITHUB_JOB is ok" >> ./log-CI
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -158,5 +158,5 @@ jobs:
           path: ./
       - name: Notify
         run: |
-          sh ci-notify.sh log-CI $GITHUB_ACTION_REPOSITORY $GITHUB_REPOSITORY
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
       
