@@ -39,14 +39,13 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
-      - name: source venv/bin/activate
-        run: source venv/bin/activate
+      - name: linting
+        run: | 
+          source venv/bin/activate
+          ruff check --fix
 
       - name: echo "starting time is $(date)" > log-CI
         run: echo "starting time is $(date)" > log-CI
-
-      - name: ruff check --fix
-        run: ruff check --fix
 
       - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
@@ -68,12 +67,10 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
-      - name: source venv/bin/activate
-        run: source venv/bin/activate
-
       - name: pytest
-        run: pytest
-
+        run: |
+          source venv/bin/activate
+          pytest
 
       - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
@@ -96,15 +93,11 @@ jobs:
       - name: download-artifacts
         uses: actions/download-artifact@v4
 
-      - name: source venv/bin/activate
-        run: source venv/bin/activate
-
-      - name: cd docs
-        run: cd docs
-
-      - name: python3 create_all_docs.py
-        run: python3 create_all_docs.py
-
+      - name: creating documentation
+        run: |
+          source venv/bin/activate
+          cd docs
+          python3 create_all_docs.py
 
       - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
@@ -126,10 +119,6 @@ jobs:
     runs-on: self-hosted
     steps:
        
-      - name: source venv/bin/activate
-        run: source venv/bin/activate
-
-
       - name: checkout
         uses: actions/checkout@v3
 
