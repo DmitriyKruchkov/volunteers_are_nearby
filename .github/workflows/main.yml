@@ -59,7 +59,7 @@ jobs:
   documentation:
     runs-on: self-hosted
     needs: [testing, linting]
-    if: {{$GITHUB_REF_NAME == "main"}}
+    if: ${{ $GITHUB_REF_NAME == "main" }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -95,7 +95,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: [testing, linting, documentation]
-    if: {{$GITHUB_REF_NAME == "main"}}
+    if: ${{ $GITHUB_REF_NAME == "main" }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -119,7 +119,7 @@ jobs:
 
   notify:
     runs-on: self-hosted
-    if: {{$GITHUB_REF_NAME == "main"}}
+    if: ${{ $GITHUB_REF_NAME == "main" }}
     needs: [testing, linting, deploy, documentation]
     steps:
       - name: Notify
