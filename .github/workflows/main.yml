@@ -9,8 +9,7 @@ jobs:
   before_script:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - run: python3 -m venv venv
       - run: source venv/bin/activate
       - run: pip install poetry
@@ -25,8 +24,7 @@ jobs:
       pre:
         - run: source venv/bin/activate
       main:
-        - name: Checkout code
-          uses: actions/checkout@v3
+        - uses: actions/checkout@v3
         - run: echo "starting time is $(date)" > log-CI
         - run: ruff check --fix
       post:
