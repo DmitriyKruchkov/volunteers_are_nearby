@@ -28,6 +28,12 @@ jobs:
         with:
           name: logfile
           path: ./log-CI
+
+      - name: Upload venv
+        uses: actions/upload-artifact@v4
+        with:
+          name: venv
+          path: ./venv
       
 
   testing:
@@ -43,12 +49,15 @@ jobs:
           name: logfile
           path: ./
 
+      - name: Download venv
+        uses: actions/download-artifact@v4
+        with:
+          name: venv
+          path: ./
+
       - name: Setup Python environment
         run: |
-          python3 -m venv venv
           source venv/bin/activate
-          pip install poetry
-          poetry install
           pytest
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
 
@@ -61,6 +70,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Download venv
+        uses: actions/download-artifact@v4
+        with:
+          name: venv
+          path: ./
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -69,10 +84,7 @@ jobs:
 
       - name: Setup Python environment
         run: |
-          python3 -m venv venv
           source venv/bin/activate
-          pip install poetry
-          poetry install
       - name: Documentation
         run: |
           cd docs
@@ -114,7 +126,6 @@ jobs:
       - name: Log job status
         run: |
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
-
 
 
   notify:
