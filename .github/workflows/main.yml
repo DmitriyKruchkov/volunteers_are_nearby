@@ -1,4 +1,4 @@
-name: Main CI
+name: main-ci
 on:
   push:
     branches: ["feature_17"]
