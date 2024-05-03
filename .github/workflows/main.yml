@@ -160,3 +160,11 @@ jobs:
         run: |
           sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
       
+  notify-on-failure:
+    runs-on: self-hosted
+    steps:
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed." > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
