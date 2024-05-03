@@ -113,10 +113,13 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - name: logfile
+            name: logfile
             path: log-CI
-
-          - name: docsdir
+            
+      - name: Test
+        uses: actions/upload-artifact@v4
+        with:
+            name: docsdir
             path: $CI_PROJECT_DIR/docs/
 
   deploy:
