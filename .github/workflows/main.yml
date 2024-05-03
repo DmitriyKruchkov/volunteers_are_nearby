@@ -114,7 +114,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docs
-          path: ./
+          path: ./docs
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
