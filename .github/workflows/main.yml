@@ -22,6 +22,12 @@ jobs:
       - name: Log job status
         run: |
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: logfile
+          path: log-CI
       
 
   testing:
@@ -30,6 +36,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
       - name: Setup Python environment
         run: |
           python3 -m venv venv
@@ -38,7 +48,12 @@ jobs:
           poetry install
           pytest
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
-      
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: logfile
+          path: log-CI
       
 
   documentation:
@@ -47,6 +62,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
       - name: Setup Python environment
         run: |
           python3 -m venv venv
@@ -65,6 +84,12 @@ jobs:
         with:
           path: docs/
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: logfile
+          path: log-CI
+
 
   deploy:
     runs-on: self-hosted
@@ -72,6 +97,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
       - name: Deploy
         run: |
           docker-compose down
@@ -79,9 +108,11 @@ jobs:
       - name: Log job status
         run: |
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: logfile
           path: log-CI
 
 
@@ -91,11 +122,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
       - name: Notify
         run: |
           echo "end time is $(date)" >> log-CI
-          sh ci-notify.sh log-CI
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          path: log-CI
+          sh ci-notify.sh log-CI $GITHUB_ACTION_REPOSITORY $GITHUB_REF_NAME
+      
