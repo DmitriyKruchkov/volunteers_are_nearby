@@ -1,4 +1,4 @@
-name: main-ci
+name:  -ci
 on:
   push:
     branches: ["feature_17"]
@@ -32,100 +32,99 @@ jobs:
   linting:
     runs-on: self-hosted
     steps:
-      pre:
-        - name: Test
-          run: source venv/bin/activate
+       
+      - name: Test
+        run: source venv/bin/activate
 
-      main:
-        - name: Test
-          uses: actions/checkout@v3
 
-        - name: Test
-          run: echo "starting time is $(date)" > log-CI
+      - name: Test
+        uses: actions/checkout@v3
 
-        - name: Test
-          run: ruff check --fix
-      post:
-        - name: Test
-          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+      - name: Test
+        run: echo "starting time is $(date)" > log-CI
 
-        - name: Test
-          uses: actions/upload-artifact@v4
-          with:
-            - path: flaskr/
-            - path: log-CI
+      - name: Test
+        run: ruff check --fix
+
+      - name: Test
+        run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
+      - name: Test
+        uses: actions/upload-artifact@v4
+        with:
+          - path: flaskr/
+          - path: log-CI
 
   testing:
     runs-on: self-hosted
     steps:
-      pre:
-        - name: Test
-          run: source venv/bin/activate
+       
+      - name: Test
+        run: source venv/bin/activate
 
-      main:
-        - name: Test
-          uses: actions/checkout@v3
 
-        - name: Test
-          run: pytest
+      - name: Test
+        uses: actions/checkout@v3
 
-      post:
-        - name: Test
-          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+      - name: Test
+        run: pytest
 
-        - name: Test
-          uses: actions/upload-artifact@v4
-          with:
-            - path: log-CI
+
+      - name: Test
+        run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
+      - name: Test
+        uses: actions/upload-artifact@v4
+        with:
+          - path: log-CI
   documentation:
     runs-on: self-hosted
     steps:
-      pre:
-        - name: Test
-          run: source venv/bin/activate
+       
+      - name: Test
+        run: source venv/bin/activate
 
-      main:
-        - name: Test
-          uses: actions/checkout@v3
+      - name: Test
+        uses: actions/checkout@v3
 
-        - name: Test
-          run: cd docs
+      - name: Test
+        run: cd docs
 
-        - name: Test
-          run: python3 create_all_docs.py
+      - name: Test
+        run: python3 create_all_docs.py
 
-      post:
-        - name: Test
-          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
 
-        - name: Test
-          uses: actions/upload-artifact@v4
-          with:
-            - path: log-CI
-            - path: $CI_PROJECT_DIR/docs/
+      - name: Test
+        run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
+      - name: Test
+        uses: actions/upload-artifact@v4
+        with:
+          - path: log-CI
+          - path: $CI_PROJECT_DIR/docs/
 
   deploy:
     runs-on: self-hosted
     steps:
-      pre:
-        - name: Test
-          run: source venv/bin/activate
+       
+      - name: Test
+        run: source venv/bin/activate
 
-      main:
-        - name: Test
-          uses: actions/checkout@v3
 
-        - name: Test
-          run: docker-compose down
+      - name: Test
+        uses: actions/checkout@v3
 
-        - name: Test
-          run: docker-compose up -d
+      - name: Test
+        run: docker-compose down
 
-      post:
-        - name: Test
-          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+      - name: Test
+        run: docker-compose up -d
 
-        - name: Test
-          uses: actions/upload-artifact@v4
-          with:
-            - path: log-CI
+
+      - name: Test
+        run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
+      - name: Test
+        uses: actions/upload-artifact@v4
+        with:
+          - path: log-CI
