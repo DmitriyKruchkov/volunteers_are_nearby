@@ -16,20 +16,17 @@ jobs:
           source venv/bin/activate
           pip install poetry
           poetry install
-      - name: Linting
-        run: |
           echo "starting time is $(date)" > log-CI
           ruff check --fix
+
       - name: Log job status
         run: |
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          path: flaskr/
+      
 
   testing:
     runs-on: self-hosted
+    needs: linting
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -39,19 +36,14 @@ jobs:
           source venv/bin/activate
           pip install poetry
           poetry install
-      - name: Testing
-        run: |
           pytest
-      - name: Log job status
-        run: |
           echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          path: log-CI
+      
+      
 
   documentation:
     runs-on: self-hosted
+    needs: [testing, linting]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -76,6 +68,7 @@ jobs:
 
   deploy:
     runs-on: self-hosted
+    needs: [testing, linting, documentation]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -94,6 +87,7 @@ jobs:
 
   notify:
     runs-on: self-hosted
+    needs: [testing, linting, deploy, documentation]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -105,4 +99,3 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: log-CI
-    
