@@ -1,4 +1,4 @@
-name:  -ci
+name: main
 on:
   push:
     branches: ["feature_17"]
@@ -27,18 +27,23 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
+          name: venv
           path: venv
 
   linting:
     runs-on: self-hosted
     steps:
-       
+
+
       - name: Test
         run: source venv/bin/activate
 
 
       - name: Test
         uses: actions/checkout@v3
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
 
       - name: Test
         run: echo "starting time is $(date)" > log-CI
@@ -52,8 +57,8 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - path: flaskr/
-          - path: log-CI
+          - name: logfile
+            path: log-CI
 
   testing:
     runs-on: self-hosted
@@ -66,6 +71,9 @@ jobs:
       - name: Test
         uses: actions/checkout@v3
 
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
+
       - name: Test
         run: pytest
 
@@ -76,7 +84,8 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - path: log-CI
+          - name: logfile
+            path: log-CI
   documentation:
     runs-on: self-hosted
     steps:
@@ -86,6 +95,9 @@ jobs:
 
       - name: Test
         uses: actions/checkout@v3
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
 
       - name: Test
         run: cd docs
@@ -100,8 +112,11 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - path: log-CI
-          - path: $CI_PROJECT_DIR/docs/
+          - name: logfile
+            path: log-CI
+
+          - name: docsdir
+            path: $CI_PROJECT_DIR/docs/
 
   deploy:
     runs-on: self-hosted
@@ -113,6 +128,9 @@ jobs:
 
       - name: Test
         uses: actions/checkout@v3
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
 
       - name: Test
         run: docker-compose down
@@ -127,4 +145,5 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - path: log-CI
+          - name: logfile
+            path: log-CI
