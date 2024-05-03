@@ -49,7 +49,6 @@ documentation:
       - log-CI
 
 
-
 deploy:
   stage: deploy
   script:
