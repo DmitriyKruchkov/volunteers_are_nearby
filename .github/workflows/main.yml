@@ -9,19 +9,19 @@ jobs:
   before_script:
     runs-on: self-hosted
     steps:
-      - name: Test
+      - name: actions/checkout@v3
         uses: actions/checkout@v3
 
-      - name: Test
+      - name: python3 -m venv venv
         run: python3 -m venv venv
 
-      - name: Test
+      - name: poetry install
         run: | 
           source venv/bin/activate
           pip install poetry
           poetry install
 
-      - name: Test
+      - name: venv
         uses: actions/upload-artifact@v4
         with:
           name: venv
@@ -33,26 +33,25 @@ jobs:
     steps:
 
 
-      - name: Test
-        run: source venv/bin/activate
-
-
-      - name: Test
+      - name: checkout
         uses: actions/checkout@v3
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
-      - name: Test
+      - name: source venv/bin/activate
+        run: source venv/bin/activate
+
+      - name: echo "starting time is $(date)" > log-CI
         run: echo "starting time is $(date)" > log-CI
 
-      - name: Test
+      - name: ruff check --fix
         run: ruff check --fix
 
-      - name: Test
+      - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
 
-      - name: Test
+      - name: logfile
         uses: actions/upload-artifact@v4
         with:
             name: logfile
@@ -63,24 +62,23 @@ jobs:
     runs-on: self-hosted
     steps:
        
-      - name: Test
-        run: source venv/bin/activate
-
-
-      - name: Test
+      - name: checkout
         uses: actions/checkout@v3
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
-      - name: Test
+      - name: source venv/bin/activate
+        run: source venv/bin/activate
+
+      - name: pytest
         run: pytest
 
 
-      - name: Test
+      - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
 
-      - name: Test
+      - name: logfile
         uses: actions/upload-artifact@v4
         with:
           name: logfile
@@ -90,33 +88,34 @@ jobs:
     needs: [testing, linting, before_script]
     runs-on: self-hosted
     steps:
-       
-      - name: Test
-        run: source venv/bin/activate
 
-      - name: Test
+
+      - name: checkout
         uses: actions/checkout@v3
 
-      - name: Download all workflow run artifacts
+      - name: download-artifacts
         uses: actions/download-artifact@v4
 
-      - name: Test
+      - name: source venv/bin/activate
+        run: source venv/bin/activate
+
+      - name: cd docs
         run: cd docs
 
-      - name: Test
+      - name: python3 create_all_docs.py
         run: python3 create_all_docs.py
 
 
-      - name: Test
+      - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
 
-      - name: Test
+      - name: logfile
         uses: actions/upload-artifact@v4
         with:
             name: logfile
             path: log-CI
 
-      - name: Test
+      - name: docsdir
         uses: actions/upload-artifact@v4
         with:
             name: docsdir
@@ -127,27 +126,27 @@ jobs:
     runs-on: self-hosted
     steps:
        
-      - name: Test
+      - name: source venv/bin/activate
         run: source venv/bin/activate
 
 
-      - name: Test
+      - name: checkout
         uses: actions/checkout@v3
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
-      - name: Test
+      - name: docker-compose down
         run: docker-compose down
 
-      - name: Test
+      - name: docker-compose up -d
         run: docker-compose up -d
 
 
-      - name: Test
+      - name: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
         run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
 
-      - name: Test
+      - name: logfile
         uses: actions/upload-artifact@v4
         with:
           name: logfile
