@@ -65,6 +65,5 @@ deploy:
 notify:
   stage: notify
   script:
-    - echo "end time is $(date)" >> log-CI
     - sh ci-notify.sh log-CI $CI_COMMIT_REF_SLUG $CI_PROJECT_TITLE
   when: always
