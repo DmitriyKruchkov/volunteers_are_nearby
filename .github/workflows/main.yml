@@ -57,7 +57,7 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - name: logfile
+            name: logfile
             path: log-CI
 
   testing:
@@ -84,8 +84,9 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - name: logfile
-            path: log-CI
+          name: logfile
+          path: log-CI
+
   documentation:
     runs-on: self-hosted
     steps:
@@ -145,5 +146,5 @@ jobs:
       - name: Test
         uses: actions/upload-artifact@v4
         with:
-          - name: logfile
-            path: log-CI
+          name: logfile
+          path: log-CI
