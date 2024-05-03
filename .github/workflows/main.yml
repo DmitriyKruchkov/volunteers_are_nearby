@@ -20,6 +20,7 @@ jobs:
           source venv/bin/activate
           pip install poetry
           poetry install
+          chmod u+rwx venv/bin/*
 
       - name: venv
         uses: actions/upload-artifact@v4
