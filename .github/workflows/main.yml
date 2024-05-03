@@ -1,0 +1,130 @@
+name: CI/CD
+
+on: push
+
+jobs:
+  linting:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Python environment and linting
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install poetry
+          poetry install
+          ruff check --fix
+
+      - name: Upload venv
+        uses: actions/upload-artifact@v4
+        with:
+          name: venv
+          path: ./venv
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB.❌" > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+      
+
+  testing:
+    runs-on: self-hosted
+    needs: linting
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download venv
+        uses: actions/download-artifact@v4
+        with:
+          name: venv
+          path: ./venv
+
+      - name: Setup Python environment
+        run: |
+          source venv/bin/activate
+          pytest
+          echo "$GITHUB_JOB is ok" >> ./log-CI
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB.❌" > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+
+      
+
+  documentation:
+    runs-on: self-hosted
+    needs: [testing, linting]
+    if: ${{  github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download venv
+        uses: actions/download-artifact@v4
+        with:
+          name: venv
+          path: ./venv
+
+      - name: Setup Python environment
+        run: |
+          source venv/bin/activate
+      - name: Documentation
+        run: |
+          cd docs
+          python3 create_all_docs.py
+          cd ..
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: ./docs
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB.❌" > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+
+
+  deploy:
+    runs-on: self-hosted
+    needs: [testing, linting, documentation]
+    if: ${{  github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: ./docs
+
+      - name: Deploy
+        run: |
+          docker-compose down
+          docker-compose up -d
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB.❌" > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+
+  notify:
+    runs-on: self-hosted
+    if: ${{  github.ref == 'refs/heads/main' }}
+    needs: [testing, linting, deploy, documentation]
+    steps:
+      - name: Notify
+        run: |
+          echo "Pipeline worked successfully.✅" > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+      
+
