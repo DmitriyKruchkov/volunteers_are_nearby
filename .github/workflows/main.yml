@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: logfile
-          path: log-CI
+          path: ./log-CI
       
 
   testing:
@@ -41,7 +41,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: logfile
-          path: log-CI
+          path: ./
 
       - name: Setup Python environment
         run: |
@@ -50,7 +50,7 @@ jobs:
           pip install poetry
           poetry install
           pytest
-          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
+          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
 
       
 
@@ -65,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: logfile
-          path: log-CI
+          path: ./
 
       - name: Setup Python environment
         run: |
@@ -79,12 +79,12 @@ jobs:
           python3 create_all_docs.py
       - name: Log job status
         run: |
-          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
+          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: docs
-          path: docs
+          path: docs/
 
 
 
@@ -99,13 +99,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docs
-          path: docs
+          path: ./
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: logfile
-          path: log-CI
+          path: ./
 
       - name: Deploy
         run: |
@@ -113,7 +113,7 @@ jobs:
           docker-compose up -d
       - name: Log job status
         run: |
-          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> log-CI
+          echo "$GITHUB_JOB is $GITHUB_JOB_STATUS" >> ./log-CI
 
 
 
@@ -128,7 +128,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: logfile
-          path: log-CI
+          path: ./
 
       - name: Notify
         run: |
