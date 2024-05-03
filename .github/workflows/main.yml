@@ -42,8 +42,7 @@ jobs:
       pre:
         - run: source venv/bin/activate
       main:
-        - name: Checkout code
-          uses: actions/checkout@v3
+        - uses: actions/checkout@v3
         - run: pytest
 
       post:
@@ -57,8 +56,7 @@ jobs:
       pre:
         - run: source venv/bin/activate
       main:
-        - name: Checkout code
-          uses: actions/checkout@v3
+        - uses: actions/checkout@v3
         - run: cd docs
         - run: python3 create_all_docs.py
       post:
@@ -74,8 +72,7 @@ jobs:
       pre:
         - run: source venv/bin/activate
       main:
-        - name: Checkout code
-          uses: actions/checkout@v3
+        - uses: actions/checkout@v3
         - run: docker-compose down
         - run: docker-compose up -d
 
