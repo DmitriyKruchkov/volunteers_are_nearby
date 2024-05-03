@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Python environment and linting
         run: |
-          python3 -m venv venv
+#          python3 -m venv venv
           source venv/bin/activate
           pip install poetry
           poetry install
@@ -35,6 +35,12 @@ jobs:
         with:
           name: venv
           path: ./venv
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB." > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
       
 
   testing:
@@ -68,6 +74,12 @@ jobs:
         with:
           name: logfile2
           path: ./log-CI
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB." > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
 
       
 
@@ -113,6 +125,12 @@ jobs:
           name: logfile3
           path: ./log-CI
 
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB." > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+
 
   deploy:
     runs-on: self-hosted
@@ -146,6 +164,11 @@ jobs:
         with:
           name: logfile4
           path: ./log-CI
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "Pipeline failed on $GITHUB_JOB." > log-CI
+          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
 
   notify:
     runs-on: self-hosted
@@ -160,11 +183,4 @@ jobs:
         run: |
           sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
       
-  notify-on-failure:
-    runs-on: self-hosted
-    steps:
-      - name: Notify on failure
-        if: ${{ failure() }}
-        run: |
-          echo "Pipeline failed." > log-CI
-          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
+
