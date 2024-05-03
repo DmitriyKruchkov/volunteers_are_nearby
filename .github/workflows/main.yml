@@ -9,12 +9,18 @@ jobs:
   before_script:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
-      - run: python3 -m venv venv
-      - run: source venv/bin/activate
-      - run: pip install poetry
-      - run: poetry install
-      - uses: actions/upload-artifact@v4
+      - name: Test
+        uses: actions/checkout@v3
+      - name: Test
+        run: python3 -m venv venv
+      - name: Test
+        run: source venv/bin/activate
+      - name: Test
+        run: pip install poetry
+      - name: Test
+        run: poetry install
+      - name: Test
+        uses: actions/upload-artifact@v4
         with:
           path: venv
 
@@ -22,14 +28,20 @@ jobs:
     runs-on: self-hosted
     steps:
       pre:
-        - run: source venv/bin/activate
+        - name: Test
+          run: source venv/bin/activate
       main:
-        - uses: actions/checkout@v3
-        - run: echo "starting time is $(date)" > log-CI
-        - run: ruff check --fix
+        - name: Test
+          uses: actions/checkout@v3
+        - name: Test
+          run: echo "starting time is $(date)" > log-CI
+        - name: Test
+          run: ruff check --fix
       post:
-        - run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
-        - uses: actions/upload-artifact@v4
+        - name: Test
+          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - name: Test
+          uses: actions/upload-artifact@v4
           with:
             - path: flaskr/
             - path: log-CI
@@ -38,28 +50,39 @@ jobs:
     runs-on: self-hosted
     steps:
       pre:
-        - run: source venv/bin/activate
+        - name: Test
+          run: source venv/bin/activate
       main:
-        - uses: actions/checkout@v3
-        - run: pytest
+        - name: Test
+          uses: actions/checkout@v3
+        - name: Test
+          run: pytest
 
       post:
-        - run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
-        - uses: actions/upload-artifact@v4
+        - name: Test
+          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - name: Test
+          uses: actions/upload-artifact@v4
           with:
             - path: log-CI
   documentation:
     runs-on: self-hosted
     steps:
       pre:
-        - run: source venv/bin/activate
+        - name: Test
+          run: source venv/bin/activate
       main:
-        - uses: actions/checkout@v3
-        - run: cd docs
-        - run: python3 create_all_docs.py
+        - name: Test
+          uses: actions/checkout@v3
+        - name: Test
+          run: cd docs
+        - name: Test
+          run: python3 create_all_docs.py
       post:
-        - run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
-        - uses: actions/upload-artifact@v4
+        - name: Test
+          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - name: Test
+          uses: actions/upload-artifact@v4
           with:
             - path: log-CI
             - path: $CI_PROJECT_DIR/docs/
@@ -68,14 +91,20 @@ jobs:
     runs-on: self-hosted
     steps:
       pre:
-        - run: source venv/bin/activate
+        - name: Test
+          run: source venv/bin/activate
       main:
-        - uses: actions/checkout@v3
-        - run: docker-compose down
-        - run: docker-compose up -d
+        - name: Test
+          uses: actions/checkout@v3
+        - name: Test
+          run: docker-compose down
+        - name: Test
+          run: docker-compose up -d
 
       post:
-        - run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
-        - uses: actions/upload-artifact@v4
+        - name: Test
+          run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - name: Test
+          uses: actions/upload-artifact@v4
           with:
             - path: log-CI
