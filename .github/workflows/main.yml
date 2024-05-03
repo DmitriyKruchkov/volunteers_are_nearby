@@ -1,0 +1,86 @@
+name: Main CI
+on:
+  push:
+    branches: ["feature_17"]
+  pull_request:
+    branches: ["feature_17"]
+
+jobs:
+  before_script:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: python3 -m venv venv
+      - uses: source venv/bin/activate
+      - uses: pip install poetry
+      - uses: poetry install
+      - uses: actions/upload-artifact@v4
+        with:
+          path: venv
+
+  linting:
+    runs-on: self-hosted
+    steps:
+      pre:
+        - uses: source venv/bin/activate
+      main:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - uses: echo "starting time is $(date)" > log-CI
+        - uses: ruff check --fix
+      post:
+        - uses: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - uses: actions/upload-artifact@v4
+          with:
+            - path: flaskr/
+            - path: log-CI
+
+  testing:
+    runs-on: self-hosted
+    steps:
+      pre:
+        - uses: source venv/bin/activate
+      main:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - uses: pytest
+
+      post:
+        - uses: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - uses: actions/upload-artifact@v4
+          with:
+            - path: log-CI
+  documentation:
+    runs-on: self-hosted
+    steps:
+      pre:
+        - uses: source venv/bin/activate
+      main:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - uses: cd docs
+        - uses: python3 create_all_docs.py
+      post:
+        - uses: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - uses: actions/upload-artifact@v4
+          with:
+            - path: log-CI
+            - path: $CI_PROJECT_DIR/docs/
+
+  deploy:
+    runs-on: self-hosted
+    steps:
+      pre:
+        - uses: source venv/bin/activate
+      main:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - uses: docker-compose down
+        - uses: docker-compose up -d
+
+      post:
+        - uses: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+        - uses: actions/upload-artifact@v4
+          with:
+            - path: log-CI
