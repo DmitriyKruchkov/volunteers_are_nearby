@@ -11,14 +11,19 @@ jobs:
     steps:
       - name: Test
         uses: actions/checkout@v3
+
       - name: Test
         run: python3 -m venv venv
+
       - name: Test
         run: source venv/bin/activate
+
       - name: Test
         run: pip install poetry
+
       - name: Test
         run: poetry install
+
       - name: Test
         uses: actions/upload-artifact@v4
         with:
@@ -30,16 +35,20 @@ jobs:
       pre:
         - name: Test
           run: source venv/bin/activate
+
       main:
         - name: Test
           uses: actions/checkout@v3
+
         - name: Test
           run: echo "starting time is $(date)" > log-CI
+
         - name: Test
           run: ruff check --fix
       post:
         - name: Test
           run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
         - name: Test
           uses: actions/upload-artifact@v4
           with:
@@ -52,15 +61,18 @@ jobs:
       pre:
         - name: Test
           run: source venv/bin/activate
+
       main:
         - name: Test
           uses: actions/checkout@v3
+
         - name: Test
           run: pytest
 
       post:
         - name: Test
           run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
         - name: Test
           uses: actions/upload-artifact@v4
           with:
@@ -71,16 +83,21 @@ jobs:
       pre:
         - name: Test
           run: source venv/bin/activate
+
       main:
         - name: Test
           uses: actions/checkout@v3
+
         - name: Test
           run: cd docs
+
         - name: Test
           run: python3 create_all_docs.py
+
       post:
         - name: Test
           run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
         - name: Test
           uses: actions/upload-artifact@v4
           with:
@@ -93,17 +110,21 @@ jobs:
       pre:
         - name: Test
           run: source venv/bin/activate
+
       main:
         - name: Test
           uses: actions/checkout@v3
+
         - name: Test
           run: docker-compose down
+
         - name: Test
           run: docker-compose up -d
 
       post:
         - name: Test
           run: echo "$CI_JOB_NAME is $CI_JOB_STATUS" >> log-CI
+
         - name: Test
           uses: actions/upload-artifact@v4
           with:
