@@ -89,6 +89,7 @@ def reqister():
             name=form.name.data,
             nickname=form.nickname.data,
             email=form.email.data,
+            mode_id=1,
             about=form.about.data
         )
         user.set_password(form.password.data)

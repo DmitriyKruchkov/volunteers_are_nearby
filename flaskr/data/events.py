@@ -8,10 +8,10 @@ class Event(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     id_responsible_user = sqlalchemy.Column(sqlalchemy.Integer,
-                                            sqlalchemy.ForeignKey("users.id"))
+                                            sqlalchemy.ForeignKey("users.id"), nullable=True)
 
     id_event_type = sqlalchemy.Column(sqlalchemy.Integer,
-                                      sqlalchemy.ForeignKey("event_types.id"))
+                                      sqlalchemy.ForeignKey("event_types.id"), nullable=True)
 
     event_name = sqlalchemy.Column(sqlalchemy.String)
     date_of_start = sqlalchemy.Column(sqlalchemy.DateTime)
