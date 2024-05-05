@@ -1,16 +1,14 @@
 import os
 import random
-
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import datetime
-
 from werkzeug.utils import secure_filename
-
 from data import db_session
 from config import SECRET_KEY, HOST, PORT, DEBUG, DATA_DIR, NON_AVATAR_PATH
 from form.loginform import LoginForm
 from data.users import User
+from data.roles import Role
 from form.registerform import RegisterForm
 from data.events import Event
 
@@ -37,16 +35,20 @@ def login():
         """
     form = LoginForm()
     if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == form.email.data).first()
-        if user and user.check_password(form.password.data):
-            # После добавления куков разкомментировать
-            # login_user(user, remember=form.remember_me.data)
-            login_user(user)
-            return redirect("/")
-        return render_template('login.html',
-                               message="Неправильный логин или пароль",
-                               form=form)
+        with db_session.create_session() as db_sess:
+            user = db_sess.query(User).filter(User.email == form.email.data).first()
+            if user and user.check_password(form.password.data):
+                # После добавления куков разкомментировать
+                # login_user(user, remember=form.remember_me.data)
+                login_user(user)
+                role = db_sess.query(Role).filter(
+                    Role.role_id == current_user.mode_id
+                ).first()
+                current_user.logging_role = role.name
+                return redirect("/")
+            return render_template('login.html',
+                                   message="Неправильный логин или пароль",
+                                   form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -138,6 +140,22 @@ def download_picture(f):
         f.save(path_to_save)
         return '/'.join([DATA_DIR, directory, filename])
     return NON_AVATAR_PATH
+
+@login_required
+@app.route('/account')
+@app.route("/account/info")
+def account_info():
+    return render_template("account_info.html")
+
+@app.route("/account/edit")
+def account_edit():
+    return render_template("account_edit.html")
+
+@app.route("/account/password")
+def account_password():
+    return render_template("account_password.html")
+
+
 
 
 if __name__ == '__main__':

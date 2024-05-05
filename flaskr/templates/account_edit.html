@@ -1,0 +1,29 @@
+{% extends "account_base.html" %}
+
+{% block funcs %}
+<div>
+        <h2>Изменить данные профиля</h2>
+        <form action="/update_profile" method="POST">
+            <label for="name">Имя:</label><br/>
+            <input type="text" name="name" value="{{ current_user.name }}"><br/>
+
+            <label for="surname">Фамилия:</label><br/>
+            <input type="text" name="surname" value="{{ current_user.surname }}"><br/>
+
+            <label for="nickname">Никнейм:</label><br/>
+            <input type="text" name="nickname" value="{{ current_user.nickname }}"><br/>
+
+            <label for="about">О себе:</label><br/>
+            <textarea name="about">{{ current_user.about }}</textarea><br/>
+
+            <label for="email">Email:</label><br/>
+            <input type="email" name="email" value="{{ current_user.email }}"><br/>
+
+            <label for="photo">Фото профиля:</label><br/>
+            <input type="file" name="photo"><br/>
+            <br/>
+
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        </form>
+    </div>
+{% endblock %}

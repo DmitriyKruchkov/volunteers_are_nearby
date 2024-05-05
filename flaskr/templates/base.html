@@ -16,7 +16,7 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="/">Волонтеры рядом</a>
         {% if current_user.is_authenticated %}
-        <div>
+        <a href="/account"><button type="button" class="btn btn-info"><b>Личный кабинет</b></button></a>
         <img class="navbar-brand" src="{{ url_for('static', filename=current_user.photo) }}", width="64" height="64">
         <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
         </div>
