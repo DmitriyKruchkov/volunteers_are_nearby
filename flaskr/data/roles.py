@@ -8,4 +8,3 @@ class Role(SqlAlchemyBase):
                            primary_key=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     connection = sqlalchemy.orm.relationship("User", back_populates="mode_connection")
-

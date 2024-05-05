@@ -15,7 +15,7 @@ class User(SqlAlchemyBase, UserMixin):
     about = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True)
-
+    photo = sqlalchemy.Column(sqlalchemy.String)
     mode_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('roles.role_id'), nullable=True)
     mode_connection = sqlalchemy.orm.relationship('Role')
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
