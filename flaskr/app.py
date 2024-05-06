@@ -1,14 +1,16 @@
 import os
 import random
+
+import flask
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from wtforms import StringField
-
 from data import db_session
 from config import SECRET_KEY, HOST, PORT, DEBUG, DATA_DIR, NON_AVATAR_PATH
 from flaskr.form.account_editform import AccountEditForm
+from flaskr.form.account_password_form import AccountPasswordForm
 from form.loginform import LoginForm
 from data.users import User
 from data.roles import Role
@@ -104,6 +106,7 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
+        db_sess.close()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
@@ -146,44 +149,57 @@ def download_picture(f):
 @app.route('/account')
 @app.route("/account/info")
 def account_info():
-    with db_session.create_session() as db_sess:
-        role = db_sess.query(Role).filter(
-        Role.role_id == current_user.mode_id
-        ).first()
-        return render_template("account_info.html", role_name=role.name)
+    db_sess = db_session.create_session()
+    role = db_sess.query(Role).filter(
+    Role.role_id == current_user.mode_id
+    ).first()
+    db_sess.close()
+    return render_template("account_info.html", role_name=role.name)
 
 
 @app.route("/account/edit", methods=['GET', 'POST'])
 def account_edit():
     form = AccountEditForm()
     if form.validate_on_submit():
-        with db_session.create_session() as db_sess:
-            updated_data_to_load = {}
-            for i in set(vars(form)) & set(vars(current_user)) ^ {"photo"}:
-                print(i)
-                print(getattr(current_user, i))
-                print((getattr(form, i)).data)
-                if getattr(current_user, i) != (getattr(form, i)).data:
-                    updated_data_to_load[i] = (getattr(form, i)).data
-            if form.photo.data.filename:
-                updated_data_to_load['photo'] = download_picture(form.photo.data)
-            if updated_data_to_load:
-                db_sess.query(User).filter(
-                    User.id == current_user.id
-                ).update(
-                    updated_data_to_load
-                )
-                db_sess.commit()
-                return redirect("/account/info")
+        db_sess = db_session.create_session()
+        updated_data_to_load = {}
+        for i in set(vars(form)) & set(vars(current_user)) ^ {"photo"}:
+            if getattr(current_user, i) != (getattr(form, i)).data:
+                updated_data_to_load[i] = (getattr(form, i)).data
+        if form.photo.data.filename:
+            updated_data_to_load['photo'] = download_picture(form.photo.data)
+        if updated_data_to_load:
+            db_sess.query(User).filter(
+                User.id == current_user.id
+            ).update(
+                updated_data_to_load
+            )
+            db_sess.commit()
+        db_sess.close()
+        return redirect("/account/info")
     form.name.data = current_user.name
     form.surname.data = current_user.surname
     form.about.data = current_user.about
     return render_template("account_edit.html", form=form)
 
 
-@app.route("/account/password")
+@app.route("/account/password", methods=['GET', 'POST'])
 def account_password():
-    return render_template("account_password.html")
+    form = AccountPasswordForm()
+    if form.validate_on_submit():
+        if form.new_password.data != form.new_password_again.data:
+            return render_template("account_password.html", form=form, message="Пароли не совпадают")
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        if user.check_password(form.old_password.data):
+            user.set_password(form.new_password.data)
+            db_sess.query(User).filter(User.id == current_user.id).update({User.hashed_password: user.hashed_password})
+            db_sess.commit()
+            db_sess.close()
+            logout_user()
+            return redirect("/login")
+        return render_template("account_password.html", form=form, message="Неправильный пароль")
+    return render_template("account_password.html", form=form)
 
 
 if __name__ == '__main__':
