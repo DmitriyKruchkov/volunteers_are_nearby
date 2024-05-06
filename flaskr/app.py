@@ -4,13 +4,17 @@ from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from wtforms import StringField
+
 from data import db_session
 from config import SECRET_KEY, HOST, PORT, DEBUG, DATA_DIR, NON_AVATAR_PATH
+from flaskr.form.account_editform import AccountEditForm
 from form.loginform import LoginForm
 from data.users import User
 from data.roles import Role
 from form.registerform import RegisterForm
 from data.events import Event
+from sqlalchemy import update
 
 app = Flask(__name__, template_folder="templates")
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -41,10 +45,6 @@ def login():
                 # После добавления куков разкомментировать
                 # login_user(user, remember=form.remember_me.data)
                 login_user(user)
-                role = db_sess.query(Role).filter(
-                    Role.role_id == current_user.mode_id
-                ).first()
-                current_user.logging_role = role.name
                 return redirect("/")
             return render_template('login.html',
                                    message="Неправильный логин или пароль",
@@ -141,21 +141,49 @@ def download_picture(f):
         return '/'.join([DATA_DIR, directory, filename])
     return NON_AVATAR_PATH
 
+
 @login_required
 @app.route('/account')
 @app.route("/account/info")
 def account_info():
-    return render_template("account_info.html")
+    with db_session.create_session() as db_sess:
+        role = db_sess.query(Role).filter(
+        Role.role_id == current_user.mode_id
+        ).first()
+        return render_template("account_info.html", role_name=role.name)
 
-@app.route("/account/edit")
+
+@app.route("/account/edit", methods=['GET', 'POST'])
 def account_edit():
-    return render_template("account_edit.html")
+    form = AccountEditForm()
+    if form.validate_on_submit():
+        with db_session.create_session() as db_sess:
+            updated_data_to_load = {}
+            for i in set(vars(form)) & set(vars(current_user)) ^ {"photo"}:
+                print(i)
+                print(getattr(current_user, i))
+                print((getattr(form, i)).data)
+                if getattr(current_user, i) != (getattr(form, i)).data:
+                    updated_data_to_load[i] = (getattr(form, i)).data
+            if form.photo.data.filename:
+                updated_data_to_load['photo'] = download_picture(form.photo.data)
+            if updated_data_to_load:
+                db_sess.query(User).filter(
+                    User.id == current_user.id
+                ).update(
+                    updated_data_to_load
+                )
+                db_sess.commit()
+                return redirect("/account/info")
+    form.name.data = current_user.name
+    form.surname.data = current_user.surname
+    form.about.data = current_user.about
+    return render_template("account_edit.html", form=form)
+
 
 @app.route("/account/password")
 def account_password():
     return render_template("account_password.html")
-
-
 
 
 if __name__ == '__main__':

@@ -3,27 +3,45 @@
 {% block funcs %}
 <div>
         <h2>Изменить данные профиля</h2>
-        <form action="/update_profile" method="POST">
-            <label for="name">Имя:</label><br/>
-            <input type="text" name="name" value="{{ current_user.name }}"><br/>
-
-            <label for="surname">Фамилия:</label><br/>
-            <input type="text" name="surname" value="{{ current_user.surname }}"><br/>
-
-            <label for="nickname">Никнейм:</label><br/>
-            <input type="text" name="nickname" value="{{ current_user.nickname }}"><br/>
-
-            <label for="about">О себе:</label><br/>
-            <textarea name="about">{{ current_user.about }}</textarea><br/>
-
-            <label for="email">Email:</label><br/>
-            <input type="email" name="email" value="{{ current_user.email }}"><br/>
-
-            <label for="photo">Фото профиля:</label><br/>
-            <input type="file" name="photo"><br/>
-            <br/>
-
-            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-        </form>
+        <form action="" method="post", enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.surname.label }}<br>
+        {{ form.surname(class="form-control") }}<br>
+        {% for error in form.surname.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.photo.label }}: {{ form.photo }}<br>
+        {% for error in form.photo.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.about.label }}<br>
+        {{ form.about(class="form-control") }}<br>
+        {% for error in form.about.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
     </div>
 {% endblock %}

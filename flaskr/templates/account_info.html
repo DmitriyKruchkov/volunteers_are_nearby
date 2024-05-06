@@ -9,7 +9,7 @@
         <p>Никнейм:<br/> {{ current_user.nickname }}</p><br/>
         <p>О себе:<br/> {{ current_user.about }}</p><br/>
         <p>Email:<br/> {{ current_user.email }}</p><br/>
-        <p>Роль:<br/> {{ current_user.logging_role }}</p><br/>
+        <p>Роль:<br/> {{ role_name }}</p><br/>
  </div>
   <div class="right-column-info">
       <p>Фото профиля:</p><img src="{{ url_for('static', filename=current_user.photo) }}" alt="Фото профиля", width="200", height="300">
