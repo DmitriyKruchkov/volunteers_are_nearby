@@ -25,3 +25,18 @@
 .event h2 {
     margin-top: 10px;
 }
+
+.container-info {
+  display: flex;
+}
+
+.left-column-info {
+  flex: 1;
+  padding: 10px;
+}
+
+.right-column-info {
+  flex: 1;
+  background-color: #f1f1f1;
+  padding: 10px;
+}

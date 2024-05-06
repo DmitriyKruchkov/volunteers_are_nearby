@@ -1,2 +1,2 @@
 # Подключение модели пользователя
-from . import users, events, event_types
+from . import users, events, event_types, roles
