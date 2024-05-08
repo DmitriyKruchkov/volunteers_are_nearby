@@ -1,14 +1,12 @@
+import json
 import os
 import random
-
-import flask
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from wtforms import StringField
 from data import db_session
-from config import SECRET_KEY, HOST, PORT, DEBUG, DATA_DIR, NON_AVATAR_PATH
+from config import SECRET_KEY, HOST, PORT, DEBUG, DATA_DIR, NON_AVATAR_PATH, REDIS_HOST, REDIS_PORT
 from form.account_editform import AccountEditForm
 from form.account_password_form import AccountPasswordForm
 from form.loginform import LoginForm
@@ -16,12 +14,13 @@ from data.users import User
 from data.roles import Role
 from form.registerform import RegisterForm
 from data.events import Event
-from sqlalchemy import update
+from redis import Redis
 
 app = Flask(__name__, template_folder="templates")
 app.config['SECRET_KEY'] = SECRET_KEY
 login_manager = LoginManager()
 login_manager.init_app(app)
+redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT)
 
 
 @login_manager.user_loader
@@ -62,14 +61,19 @@ def index():
         :return: шаблон главной страницы
         """
     db_sess = db_session.create_session()
-    current_time = datetime.now()
-    query = (db_sess.query(Event.id,
-                           Event.event_name,
-                           Event.date_of_start,
-                           Event.picture_path)
-             .filter(Event.date_of_start > current_time)
-             .order_by(Event.date_of_start))
-    executed_query = query.all()
+    current_day = datetime.now().date()
+    request_to_redis = f'news-{current_day.strftime("%D")}'
+    if not redis_client.get(request_to_redis):
+        query = (db_sess.query(Event.id,
+                               Event.event_name,
+                               Event.date_of_start,
+                               Event.picture_path)
+                 .filter(Event.date_of_start > current_day)
+                 .order_by(Event.date_of_start))
+        executed_query = query.all()
+        redis_client.set(request_to_redis, json.dumps(executed_query), ex=300)
+    else:
+        executed_query = json.loads(redis_client.get(request_to_redis))
     events = [elem._asdict() for elem in executed_query]
     return render_template("index.html", events=events)
 
@@ -151,7 +155,7 @@ def download_picture(f):
 def account_info():
     db_sess = db_session.create_session()
     role = db_sess.query(Role).filter(
-    Role.role_id == current_user.mode_id
+        Role.role_id == current_user.mode_id
     ).first()
     db_sess.close()
     return render_template("account_info.html", role_name=role.name)
