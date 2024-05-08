@@ -8,8 +8,8 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - internet
-      - local
+      - default
+      - internal
     depends_on:
       - caching-service
   document-service:
@@ -20,20 +20,13 @@ services:
     volumes:
       - ./docs/build/html/:/usr/share/nginx/html:ro
     networks:
-      - internet
+      - default
   caching-service:
     container_name: redis
     image: redis:alpine
     ports:
       - "5100:6379"
     networks:
-      - local
+      - internal
 
-networks:
-  internet:
-    name: internet
-    driver: bridge
-  local:
-    name: local
-    driver: host
 
