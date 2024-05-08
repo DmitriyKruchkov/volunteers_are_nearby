@@ -1,6 +1,8 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 import os
 
 SqlAlchemyBase = orm.declarative_base()
@@ -29,6 +31,29 @@ def global_init(db_file):
     from . import __all_models
 
     SqlAlchemyBase.metadata.create_all(engine)
+
+    session = __factory()
+    values = [
+        {"role_id": 1, "name": "Пользователь"},
+        {"role_id": 2, "name": "Модератор"},
+        {"role_id": 3, "name": "Администратор"}
+    ]
+
+    # Выполните запрос на вставку
+    for value in values:
+        try:
+            session.execute(
+                text("INSERT INTO roles (role_id, name) VALUES (:role_id, :name)"),
+                value
+            )
+        except IntegrityError:
+            continue
+
+    # Зафиксируйте изменения
+    session.commit()
+
+    # Закройте сессию
+    session.close()
 
 
 def create_session() -> Session:
