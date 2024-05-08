@@ -9,8 +9,8 @@ from werkzeug.utils import secure_filename
 from wtforms import StringField
 from data import db_session
 from config import SECRET_KEY, HOST, PORT, DEBUG, DATA_DIR, NON_AVATAR_PATH
-from flaskr.form.account_editform import AccountEditForm
-from flaskr.form.account_password_form import AccountPasswordForm
+from form.account_editform import AccountEditForm
+from form.account_password_form import AccountPasswordForm
 from form.loginform import LoginForm
 from data.users import User
 from data.roles import Role
@@ -127,7 +127,7 @@ def create_random_dir_name():
     len_of_hash = 16
     alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
     new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
-    while new_dir_name in os.listdir('/'.join(['static', DATA_DIR])):
+    while new_dir_name in os.listdir(os.path.join('static', DATA_DIR)):
         new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
     return new_dir_name
 
@@ -136,12 +136,12 @@ def download_picture(f):
     filename = secure_filename(f.filename)
     if filename:
         directory = create_random_dir_name()
-        os.mkdir('/'.join(['./static', DATA_DIR, directory]))
-        path_to_save = '/'.join([
+        os.mkdir(os.path.join('static', DATA_DIR, directory))
+        path_to_save = os.path.join(
             'static', DATA_DIR, directory, filename
-        ])
+        )
         f.save(path_to_save)
-        return '/'.join([DATA_DIR, directory, filename])
+        return os.path.join(DATA_DIR, directory, filename)
     return NON_AVATAR_PATH
 
 
