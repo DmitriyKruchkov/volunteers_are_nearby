@@ -19,6 +19,8 @@ services:
       - "5050:80"
     volumes:
       - ./docs/build/html/:/usr/share/nginx/html:ro
+    networks:
+      - internet
   caching-service:
     container_name: redis
     image: redis:alpine
