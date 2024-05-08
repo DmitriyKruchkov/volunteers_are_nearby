@@ -31,7 +31,7 @@ networks:
   internet:
     name: internet
     driver: bridge
-  internal:
+  local:
     name: local
     driver: host
 
