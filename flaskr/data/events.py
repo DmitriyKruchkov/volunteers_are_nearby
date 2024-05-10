@@ -1,16 +1,18 @@
 import sqlalchemy
-from .db_session import SqlAlchemyBase
+from sqlalchemy import ForeignKey, Integer
+
+import database
 
 
-class Event(SqlAlchemyBase):
+class Event(database.SqlAlchemyBase):
     __tablename__ = 'events'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    id_responsible_user = sqlalchemy.Column(sqlalchemy.Integer,
+    id_responsible_user = sqlalchemy.Column(Integer,
                                             sqlalchemy.ForeignKey("users.id"), nullable=True)
 
-    id_event_type = sqlalchemy.Column(sqlalchemy.Integer,
+    id_event_type = sqlalchemy.Column(Integer,
                                       sqlalchemy.ForeignKey("event_types.id"), nullable=True)
 
     event_name = sqlalchemy.Column(sqlalchemy.String)
