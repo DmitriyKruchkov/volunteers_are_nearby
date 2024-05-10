@@ -4,5 +4,5 @@ PORT = 5000
 DEBUG = True
 DATA_DIR = "users_avatars"
 NON_AVATAR_PATH = "users_avatars/default.jpg"
-REDIS_HOST = "redis"
+REDIS_HOST = "wsl.localhost"
 REDIS_PORT = 6379

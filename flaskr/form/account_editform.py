@@ -10,3 +10,8 @@ class AccountEditForm(FlaskForm):
     photo = FileField(validators=[file_ext_validator(ext=["jpeg", "png", "jpg"])])
     about = TextAreaField("Немного о себе")
     submit = SubmitField('Изменить данные')
+
+    def auto_fill(self, current_user):
+        self.name.data = current_user.name
+        self.surname.data = current_user.surname
+        self.about.data = current_user.about

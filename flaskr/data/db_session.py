@@ -49,10 +49,8 @@ def global_init(db_file):
         except IntegrityError:
             continue
 
-    # Зафиксируйте изменения
     session.commit()
 
-    # Закройте сессию
     session.close()
 
 
