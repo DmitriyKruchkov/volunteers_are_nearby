@@ -1,6 +1,5 @@
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, render_template
 from services.events import getActualEvents
-
 
 events_router = Blueprint("news", __name__)
 

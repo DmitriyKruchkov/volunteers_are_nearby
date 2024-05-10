@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, EmailField, FileField, SubmitField
+from wtforms import StringField, TextAreaField, FileField, SubmitField
 from wtforms.validators import DataRequired
-from .custom_validators import file_ext_validator
+from form.custom_validators import file_ext_validator
 
 
 class AccountEditForm(FlaskForm):

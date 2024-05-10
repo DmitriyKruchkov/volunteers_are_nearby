@@ -1,8 +1,7 @@
 from config import PORT, HOST, DEBUG
-from core import *
 from routes.users import user_router
 from routes.events import events_router
-
+from core import app
 
 app.register_blueprint(user_router)
 app.register_blueprint(events_router)

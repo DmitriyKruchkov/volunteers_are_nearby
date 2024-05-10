@@ -1,12 +1,11 @@
-from flask import Blueprint, redirect, render_template
-from flask_login import login_user, login_required, logout_user, current_user
-from core import db_session
+from flask import Blueprint, render_template, redirect
+from flask_login import login_user, logout_user, login_required, current_user
 from form.account_editform import AccountEditForm
 from form.account_password_form import AccountPasswordForm
-from form.loginform import LoginForm
-from form.registerform import RegisterForm
 from services.roles import getRole
 from services.users import getUserByEmail, checkUsers, addUserFromForm, loadNewData, changePassword
+from form.loginform import LoginForm
+from form.registerform import RegisterForm
 
 user_router = Blueprint("users", __name__)
 
@@ -22,18 +21,17 @@ def login():
         """
     form = LoginForm()
     if form.validate_on_submit():
-        with db_session.create_session() as db_sess:
-            user = getUserByEmail(form.email.data)
-            if user and user.check_password(form.password.data):
-                # После добавления куков разкомментировать
-                # login_user(user, remember=form.remember_me.data)
-                login_user(user)
-                return redirect("/")
-            return render_template(
-                template_name_or_list='login.html',
-                message="Неправильный логин или пароль",
-                form=form
-            )
+        user = getUserByEmail(form.email.data)
+        if user and user.check_password(form.password.data):
+            # После добавления куков разкомментировать
+            # login_user(user, remember=form.remember_me.data)
+            login_user(user)
+            return redirect("/")
+        return render_template(
+            template_name_or_list='login.html',
+            message="Неправильный логин или пароль",
+            form=form
+        )
     return render_template(
         template_name_or_list='login.html',
         title='Авторизация',

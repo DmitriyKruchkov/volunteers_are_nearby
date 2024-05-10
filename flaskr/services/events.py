@@ -1,12 +1,12 @@
 import json
 from datetime import datetime
-from app import redis_client
-from core import db_session
+from core import redis_client
 from data.events import Event
+from database import create_session
 
 
 def getActualEvents():
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     current_day = datetime.now().date()
     request_to_redis = f'news-{current_day.strftime("%D")}'
     if not redis_client.get(request_to_redis):

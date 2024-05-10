@@ -28,7 +28,7 @@ def global_init(db_file):
     engine = sa.create_engine(conn_str, echo=False)
     __factory = orm.sessionmaker(bind=engine)
 
-    from . import __all_models
+    from data import __all_models
 
     SqlAlchemyBase.metadata.create_all(engine)
 
@@ -39,7 +39,6 @@ def global_init(db_file):
         {"role_id": 3, "name": "Администратор"}
     ]
 
-    # Выполните запрос на вставку
     for value in values:
         try:
             session.execute(

@@ -1,24 +1,24 @@
 import os
-from random import random
+import random
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from config import DATA_DIR, NON_AVATAR_PATH
-from core import db_session
 from data.users import User
+from database import create_session
 
 
 def getUserByEmail(email):
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     return db_sess.query(User).filter(User.email == email).first()
 
 
 def getUserByID(user_id):
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     return db_sess.query(User).get(user_id)
 
 
 def checkUsers(email, nickname):
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     query = db_sess.query(User).filter((User.email == email) |
                                        (User.nickname == nickname)).first()
     if query:
@@ -27,7 +27,7 @@ def checkUsers(email, nickname):
 
 
 def addUserFromForm(form):
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     user = User(
         surname=form.surname.data,
         name=form.name.data,
@@ -66,7 +66,7 @@ def create_random_dir_name():
 
 
 def loadNewData(form):
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     updated_data_to_load = {}
     for i in set(vars(form)) & set(vars(current_user)) ^ {"photo"}:
         if getattr(current_user, i) != (getattr(form, i)).data:
@@ -84,7 +84,7 @@ def loadNewData(form):
 
 
 def changePassword(form):
-    db_sess = db_session.create_session()
+    db_sess = create_session()
     user = db_sess.query(User).filter(User.id == current_user.id).first()
     if user.check_password(form.old_password.data):
         user.set_password(form.new_password.data)

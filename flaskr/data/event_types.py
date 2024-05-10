@@ -1,8 +1,9 @@
 import sqlalchemy
-from .db_session import SqlAlchemyBase
+
+import database
 
 
-class EventType(SqlAlchemyBase):
+class EventType(database.SqlAlchemyBase):
     __tablename__ = 'event_types'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
