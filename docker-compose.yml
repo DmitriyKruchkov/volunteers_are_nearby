@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
   flask-app:
     container_name: flask_app
@@ -9,6 +9,8 @@ services:
       - "5000:5000"
     networks:
       - internet
+    depends_on:
+      - caching-service
   document-service:
     container_name: nginx
     image: nginx:alpine
@@ -16,6 +18,13 @@ services:
       - "5050:80"
     volumes:
       - ./docs/build/html/:/usr/share/nginx/html:ro
+  caching-service:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - "5100:6379"
+    networks:
+      - internet
 networks:
   internet:
     name: internet
