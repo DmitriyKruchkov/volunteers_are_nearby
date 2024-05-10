@@ -1,10 +1,10 @@
-import sqlalchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from .db_session import SqlAlchemyBase
+import database
+import sqlalchemy
 
 
-class User(SqlAlchemyBase, UserMixin):
+class User(database.SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -20,6 +20,7 @@ class User(SqlAlchemyBase, UserMixin):
     mode_connection = sqlalchemy.orm.relationship('Role')
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     logging_role = ''
+
     def __repr__(self):
         return ' '.join([self.name, self.email, self.nickname])
 
