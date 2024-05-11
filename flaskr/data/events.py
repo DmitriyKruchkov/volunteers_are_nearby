@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import ForeignKey, Integer
+
 
 import database
 
@@ -9,10 +9,10 @@ class Event(database.SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    id_responsible_user = sqlalchemy.Column(Integer,
+    id_responsible_user = sqlalchemy.Column(sqlalchemy.Integer,
                                             sqlalchemy.ForeignKey("users.id"), nullable=True)
 
-    id_event_type = sqlalchemy.Column(Integer,
+    id_event_type = sqlalchemy.Column(sqlalchemy.Integer,
                                       sqlalchemy.ForeignKey("event_types.id"), nullable=True)
 
     event_name = sqlalchemy.Column(sqlalchemy.String)

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>{{ event.event_name }}</h1>
+
+<div class="container">
+    <div class="main">
+            <div class="article">
+                <p class="image"><img src='{{ url_for("static", filename=event.picture_path) }}' alt="Image" width="700" height="400"></p>
+                <h2>{{ event.event_name }}</h2>
+               <b class="date"><b>Дата начала события: <br/>{{ event.date_of_start }}</b></b>
+                <p class="description">{{ event.about }}</p>
+            </div>
+        <div class="sidebar">
+                <h2>Адрес проведения:</h2>
+                {{ event.address }}
+            <br/>
+            <br/>
+            <h5 class="author">Ответственный за проведение:<br/>@{{ event.nickname }}</h5>
+            <br/>
+            {% if current_user.is_authenticated %}
+                <form>
+                 <button type="button" class="btn btn-primary btn-primary-join-event">Присоединиться</button>
+                </form>
+            {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
