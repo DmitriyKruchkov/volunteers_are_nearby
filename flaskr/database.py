@@ -48,6 +48,19 @@ def global_init(db_file):
         except IntegrityError:
             continue
 
+    values = [
+        {"id": 1, "name": "Тип_1"},
+        {"id": 2, "name": "Тип_2"},
+        {"id": 3, "name": "Тип_2"}
+    ]
+    for value in values:
+        try:
+            session.execute(
+                text("INSERT INTO roles (id, name) VALUES (:id, :name)"),
+                value
+            )
+        except IntegrityError:
+            continue
     session.commit()
 
     session.close()
