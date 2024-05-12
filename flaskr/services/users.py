@@ -2,7 +2,7 @@ import os
 import random
 from flask_login import current_user
 from werkzeug.utils import secure_filename
-from config import DATA_DIR, NON_AVATAR_PATH
+from config import USER_DATA_DIR, NON_AVATAR_PATH
 from data.users import User
 from database import create_session
 
@@ -43,24 +43,28 @@ def addUserFromForm(form):
     db_sess.close()
 
 
-def download_picture(f):
+def download_picture(f, parent_dir=USER_DATA_DIR):
     filename = secure_filename(f.filename)
     if filename:
-        directory = create_random_dir_name()
-        os.mkdir(os.path.join('static', DATA_DIR, directory))
+        directory = create_random_dir_name(parent_dir)
+        try:
+            os.mkdir(os.path.join('static', parent_dir, directory))
+        except FileNotFoundError:
+            os.mkdir(os.path.join('static', parent_dir))
+            os.mkdir(os.path.join('static', parent_dir, directory))
         path_to_save = os.path.join(
-            'static', DATA_DIR, directory, filename
+            'static', parent_dir, directory, filename
         )
         f.save(path_to_save)
-        return os.path.join(DATA_DIR, directory, filename)
+        return os.path.join(parent_dir, directory, filename)
     return NON_AVATAR_PATH
 
 
-def create_random_dir_name():
+def create_random_dir_name(parent_dir):
     len_of_hash = 16
     alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
     new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
-    while new_dir_name in os.listdir(os.path.join('static', DATA_DIR)):
+    while new_dir_name in os.listdir(os.path.join('static', parent_dir)):
         new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
     return new_dir_name
 
