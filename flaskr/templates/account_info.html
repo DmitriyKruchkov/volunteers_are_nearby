@@ -1,18 +1,125 @@
 {% extends "account_base.html" %}
 
 {% block funcs %}
- <div class="container-info">
-  <div class="left-column-info">
 
-        <p>Имя:<br/> {{ current_user.name }}</p><br/>
-        <p>Фамилия:<br/> {{ current_user.surname }}</p><br/>
-        <p>Никнейм:<br/> {{ current_user.nickname }}</p><br/>
-        <p>О себе:<br/> {{ current_user.about }}</p><br/>
-        <p>Email:<br/> {{ current_user.email }}</p><br/>
-        <p>Роль:<br/> {{ role_name }}</p><br/>
- </div>
-  <div class="right-column-info">
-      <p>Фото профиля:</p><img src="{{ url_for('static', filename=current_user.photo) }}" alt="Фото профиля", width="200", height="300">
+<style>
+  body {
+    background-color: #f5f5f5; /* Сероватый фон за пределами контейнера */
+  }
+
+  .container-info {
+    display: flex;
+    width: 800px;
+    justify-content: flex-end; /* Равномерное распределение между столбцами */
+    border-radius: 10px; /* Скругление углов контейнера */
+    padding: 10px; /* Добавление отступов внутри контейнера */
+  }
+
+  .column {
+    flex: 1; /* Равное распределение ширины столбцов */
+    padding: 15px; /* Добавление отступов вокруг содержимого столбца */
+    display: flex; /* Добавление flex-контейнера для выравнивания по центру */
+    flex-direction: column; /* Выравнивание содержимого по вертикали */
+    justify-content: center; /* Выравнивание содержимого по центру */
+    align-items: left; /* Выравнивание содержимого по горизонтали */
+    margin: 0 30px; /* Добавление отступов по бокам столбца */
+  }
+
+  p {
+    margin-bottom: 10px; /* Увеличение вертикального отступа между парами элементов */
+    color: #2E3336; /* Изменение цвета текста на темно-серый */
+    font-size: 12px; /* Уменьшение размера текста */
+  }
+
+  .user-info {
+    font-size: 18px; /* Устанавливаем размер шрифта 20 пикселей */
+    border-bottom: 1px solid gray; /* Добавить подчеркивание серым цветом */
+    width: 130%; /* Ширина элемента занимает всю доступную ширину */
+    margin-bottom: 30px; /* Добавление отступа снизу для разделения элементов */
+}
+
+
+  input {
+    border-bottom: 1px solid gray; /* Подчеркивание полей ввода серым цветом */
+  }
+
+  input[type="text"] {
+    border: none; /* Убрать стандартную границу поля ввода */
+    border-bottom: 1px solid gray; /* Добавить подчеркивание серым цветом */
+    background-color: transparent; /* Прозрачный фон для поля ввода */
+    outline: none; /* Убрать контур вокруг поля ввода при фокусе */
+    width: 130%; /* Ширина поля ввода занимает всю доступную ширину */
+    margin-bottom: 10px; /* Добавление отступа снизу для разделения полей */
+    font-size: 18px; /* Устанавливаем размер шрифта 20 пикселей */
+}
+
+  .button {
+    font-size: 14px; /* Уменьшение размера текста внутри кнопок */
+    font-weight: normal; /* Делаем текст жирным внутри кнопок */
+    padding: 10px 30px; /* Уменьшение отступов внутри кнопок */
+    border-radius: 100px; /* Скругленные края кнопок */
+    background-color: white; /* Белый фон кнопок */
+    color: #3498DB; /* Оранжевый текст на кнопках */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    display: block; /* Превращаем кнопку в блочный элемент */
+    width: fit-content; /* Ширина кнопки зависит от содержимого */
+    margin: 10px auto; /* Выравнивание кнопки по центру и уменьшение вертикального отступа */
+    border: 0.3px solid #679FD2; /* Обводка кнопки ярко синего цвета */
+    transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета фона и текста */
+    font-weight: bold; /* Делаем текст жирным внутри кнопки */
+}
+
+  .button:hover {
+    background-color:  #3498DB;  /*Изменение цвета фона при наведении */
+    color: white; /* Изменение цвета текста при наведении */
+  }
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttons-container {
+    margin-top: 20px; /* Расстояние между кнопками и изображением */
+  }
+
+  .profile-img {
+    width: 300px; /* Новый размер ширины изображения */
+    height: 300px; /* Новый размер высоты изображения */
+}
+  h2 {
+        padding-left: 70px; /* Измените значение по вашему усмотрению */
+ }
+
+
+</style>
+<h2>Информация об аккаунте</h2>
+<div class="container-info">
+  <div class="column">
+    <div class="profile-section">
+      <img src="{{ url_for('static', filename=current_user.photo) }}" alt="Фото профиля" style="border-radius: 50%; width: 220px; height: 220px; background-color: gray;">
+      <div class="buttons-container">
+        <button onclick="window.location.href='/account/edit'" class="button">Редактировать</button>
+        <button onclick="window.location.href='/account/password'" class="button">Сменить пароль</button>
       </div>
+    </div>
+  </div>
+  <div class="column">
+    <p>Имя:</p>
+    <p class="user-info">{{ current_user.name }}</p>
+    <p>Фамилия:</p>
+    <p class="user-info">{{ current_user.surname }}</p>
+    <p>Никнейм:</p>
+    <p class="user-info">{{ current_user.nickname }}</p>
+  </div>
+  <div class="column">
+    <p>О себе:</p>
+    <p class="user-info">{{ current_user.about }}</p>
+    <p>Email:</p>
+    <input type="text" value="{{ current_user.email }}"> <!-- Поле для ввода с подчеркиванием -->
+    <p>Роль:</p>
+    <p class="user-info">{{ role_name }}</p>
+  </div>
 </div>
+
 {% endblock %}

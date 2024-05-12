@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Личный кабинет {{ current_user.name }} {{ current_user.surname }}</h1>
+<style>
+    h1 {
+        text-align: center;
+    }
+</style>
+
+<h1>    </h1>
 <div id="sidebar">
-  <ul>
-    <li><a href="/account/info">Информация об аккаунте</a></li>
-    <li><a href="/account/edit">Редактирование данных</a></li>
-    <li><a href="/account/password">Смена пароля</a></li>
-  </ul>
+
 </div>
 {% block funcs %}{% endblock %}
 {% endblock %}

@@ -23,6 +23,7 @@
 * Bash
 * HTML
 * CSS
+* Redis
 
 
 ## Запуск проекта

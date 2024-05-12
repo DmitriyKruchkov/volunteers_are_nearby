@@ -1,15 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Мероприятия</h1>
+<h1 style="text-align: left; margin-bottom: 1px; font-size: 50px; font-family: Verdana; margin-top: 60px;">Волонтёры рядом - это <br> место, где важен каждый</h1>
 
-    <div class="events">
-        {% for event in events %}
-        <a href="/event/{{ event.id }}" class="event">
-            <img src="{{ event.picture_path }}" alt="{{ event.event_name }}">
-            <h2>{{ event.event_name }}</h2>
-            <h6>{{ event.date_of_start }}</h6>
-        </a>
-        {% endfor %}
+
+<!-- Добавляем картинку ниже заголовка и выравниваем её по центру -->
+<div style="text-align: center;">
+    <img src="https://www.ruc.su/upload/medialibrary/26e/26e7a2220b1f4e1a2e0ca1132042fe8a.png">
+    <!-- Кнопка "События" -->
+    <a href="/events" style="position: absolute; bottom: -60px; left: 180px; background: linear-gradient(135deg, #7F7FD5, #86A8E7, #91EAE4); padding: 15px 50px; border-radius: 5px; color: white; text-decoration: none; font-size: 24px;">События</a>
+</div>
+<!-- Добавляем жирную линию ниже картинки -->
+<div style="height: 5px; background-color: black; margin-top: 150px;"></div>
+
+<!-- Добавляем контейнер для цифр и текста -->
+<div style="display: flex; justify-content: space-around; align-items: center; margin-top: 20px; text-align: center;">
+    <!-- Блок для цифры 1 и текста -->
+    <div>
+        <!-- Цифра 1 в чёрном круге -->
+        <div style="width: 30px; height: 30px; background-color: black; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+            <span style="color: white; font-size: 16px;">1</span>
+        </div>
+        <!-- Текст под цифрой 1 -->
+        <div style="margin-top: 5px; font-size: 20px; font-family: Verdana;">Ищи событие</div>
     </div>
+    <!-- Блок для цифры 2 и текста -->
+    <div>
+        <!-- Цифра 2 в чёрном круге -->
+        <div style="width: 30px; height: 30px; background-color: black; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+            <span style="color: white; font-size: 16px;">2</span>
+        </div>
+        <!-- Текст под цифрой 2 -->
+        <div style="margin-top: 5px; font-size: 20px; font-family: Verdana;">Присоединяйся</div>
+    </div>
+    <!-- Блок для цифры 3 и текста -->
+    <div>
+        <!-- Цифра 3 в чёрном круге -->
+        <div style="width: 30px; height: 30px; background-color: black; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+            <span style="color: white; font-size: 16px;">3</span>
+        </div>
+        <!-- Текст под цифрой 3 -->
+        <div style="margin-top: 5px; font-size: 20px; font-family: Verdana;">Создавай своё</div>
+    </div>
+</div>
+
+
+<div class="events">
+    {% for event in events %}
+    <a href="/event/{{ event.id }}" class="event">
+        <img src="{{ event.picture_path }}" alt="{{ event.event_name }}">
+        <h2>{{ event.event_name }}</h2>
+        <h6>{{ event.date_of_start }}</h6>
+    </a>
+    {% endfor %}
+</div>
 {% endblock %}
