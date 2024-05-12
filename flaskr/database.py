@@ -56,7 +56,7 @@ def global_init(db_file):
     for value in values:
         try:
             session.execute(
-                text("INSERT INTO roles (id, name) VALUES (:id, :name)"),
+                text("INSERT INTO event_types (id, name) VALUES (:id, :name)"),
                 value
             )
         except IntegrityError:
