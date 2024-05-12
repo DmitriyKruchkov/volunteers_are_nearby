@@ -46,12 +46,10 @@ def addUserFromForm(form):
 def download_picture(f, parent_dir=USER_DATA_DIR):
     filename = secure_filename(f.filename)
     if filename:
-        directory = create_random_dir_name(parent_dir)
-        try:
-            os.mkdir(os.path.join('static', parent_dir, directory))
-        except FileNotFoundError:
+        if os.path.exists(os.path.join('static', parent_dir)):
             os.mkdir(os.path.join('static', parent_dir))
-            os.mkdir(os.path.join('static', parent_dir, directory))
+        directory = create_random_dir_name(parent_dir)
+        os.mkdir(os.path.join('static', parent_dir, directory))
         path_to_save = os.path.join(
             'static', parent_dir, directory, filename
         )
