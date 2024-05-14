@@ -17,6 +17,13 @@ def getUserByID(user_id):
     return db_sess.query(User).get(user_id)
 
 
+def load_user(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).get(user_id)
+    if user and user.warnings_count < 2:
+        return user
+
+
 def checkUsers(email, nickname):
     db_sess = create_session()
     query = db_sess.query(User).filter((User.email == email) |

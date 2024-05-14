@@ -80,9 +80,10 @@ def logout():
     return redirect("/")
 
 
-@login_required
+
 @user_router.route('/account')
 @user_router.route("/account/info")
+@login_required
 def account_info():
     role = getRole(current_user.mode_id)
     return render_template(
@@ -92,6 +93,7 @@ def account_info():
 
 
 @user_router.route("/account/edit", methods=['GET', 'POST'])
+@login_required
 def account_edit():
     form = AccountEditForm()
     if form.validate_on_submit():
@@ -102,6 +104,7 @@ def account_edit():
 
 
 @user_router.route("/account/password", methods=['GET', 'POST'])
+@login_required
 def account_password():
     form = AccountPasswordForm()
     if form.validate_on_submit():

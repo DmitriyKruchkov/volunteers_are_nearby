@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, redirect
+from flask_login import login_required
+
 from form.suggested_event_form import SuggestedEventForm
 from services.event_types import getEventTypes
 from services.suggested_events import addSuggestedEventFromForm
@@ -7,6 +9,7 @@ suggest_router = Blueprint("suggested_events", __name__)
 
 
 @suggest_router.route("/event/suggest", methods=["GET", "POST"])
+@login_required
 def create():
     form = SuggestedEventForm()
     form.setup_select_field(getEventTypes())
