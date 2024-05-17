@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Управление пользователями</h1>
+<table>
+    <thead>
+    <tr>
+        <th class="table-manage-users th-manage-users">ID</th>
+        <th class="table-manage-users th-manage-users">Имя пользователя</th>
+        <th class="table-manage-users th-manage-users">Количество предупреждений</th>
+        <th class="table-manage-users th-manage-users">Кнопка предупреждения</th>
+        {% if current_user.mode_id == 3 %}
+        <th class="table-manage-users th-manage-users">Сделать модератором</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr class="tr-manage-users">
+        <td class="table-text-manage-users td-manage-users">{{ user.id }}</td>
+        <td class="table-text-manage-users td-manage-users">{{ user.nickname }}</td>
+        <td class="table-text-manage-users td-manage-users">{{ user.warnings_count }}</td>
+        <td class="table-text-manage-users td-manage-users">
+            {% if user.warnings_count < 2 %}<a
+                href="/manage/users/ban/{{ user.id  }}">
+            <button class="btn btn-danger">+</button>
+        </a> {% endif %}
+            {% if user.warnings_count > 0 %}<a href="/manage/users/unban/{{ user.id  }}">
+            <button class="btn btn-primary">-</button>
+        </a>{% endif %}
+        </td>
+        {% if current_user.mode_id == 3 %}
+        <td class="table-text-manage-users td-manage-users">
+            {% if user.mode_id == 1 %}
+            <a
+                    href="/manage/users/upgrade/{{ user.id  }}">
+                <button class="btn btn-danger">+mod</button>
+            </a>
+            {% endif %}
+            {% if user.mode_id == 2 %}<a href="/manage/users/downgrade/{{ user.id  }}">
+            <button class="btn btn-primary">-mod</button>
+        </a>{% endif %}
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

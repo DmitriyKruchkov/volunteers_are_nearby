@@ -7,7 +7,12 @@
     <li><a href="/account/info">Информация об аккаунте</a></li>
     <li><a href="/account/edit">Редактирование данных</a></li>
     <li><a href="/account/password">Смена пароля</a></li>
+
   </ul>
+  {% if current_user.mode_id in [2, 3] %}
+<a href="/manage"><button class="btn btn-danger">Панель управления</button></a>
+{% endif %}
+
 </div>
 {% block funcs %}{% endblock %}
 {% endblock %}

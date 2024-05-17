@@ -1,5 +1,8 @@
 import os
 import random
+from functools import wraps
+
+from flask import abort
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from config import USER_DATA_DIR, NON_AVATAR_PATH
@@ -22,6 +25,16 @@ def load_user(user_id):
     user = db_sess.query(User).get(user_id)
     if user and user.warnings_count < 2:
         return user
+
+
+def privilege_mode(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if current_user.mode_id not in [2, 3]:
+            abort(403)  # Запретить доступ пользователям без роли администратора
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 def checkUsers(email, nickname):
@@ -102,3 +115,74 @@ def changePassword(form):
         db_sess.close()
         return True
     return False
+
+
+def getUsers():
+    db_sess = create_session()
+    users = db_sess.query(User).filter(User.mode_id < current_user.mode_id).all()
+    db_sess.close()
+    return users
+
+
+def addWarning(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.warnings_count < 2:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.warnings_count: User.warnings_count + 1}
+                )
+                db_sess.commit()
+    db_sess.close()
+
+
+def addForgiveness(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.warnings_count > 0:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.warnings_count: User.warnings_count - 1}
+                )
+                db_sess.commit()
+    db_sess.close()
+
+
+def userUpgrade(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.mode_id == 1:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.mode_id: 2}
+                )
+                db_sess.commit()
+    db_sess.close()
+
+
+def userDowngrade(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.mode_id == 2:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.mode_id: 1}
+                )
+                db_sess.commit()
+    db_sess.close()
