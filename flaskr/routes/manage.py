@@ -3,7 +3,7 @@ from flask_login import login_required
 from form.event_edit_form import EventEditForm
 from services.manage_event import loadEventsUpdates
 from services.users import privilege_mode, getUsers, addWarning, addForgiveness, userUpgrade, userDowngrade
-from services.events import getAllEvents, getEventByID
+from services.events import getAllEvents, getEventByID, deleteEventByID
 
 manage_route = Blueprint("admin", __name__)
 
@@ -73,7 +73,15 @@ def edit_event(event_id):
         loadEventsUpdates(event, form)
         return redirect("/manage/events")
     form.autofill(event)
-    return render_template("event_edit.html", form=form, path=event["picture_path"])
+    return render_template("event_edit.html", form=form, path=event["picture_path"], event_id=event_id)
+
+
+@manage_route.route("/manage/event/<int:event_id>/delete")
+@login_required
+@privilege_mode
+def delete_event(event_id):
+    deleteEventByID(event_id)
+    return redirect("/manage/events")
 
 
 @manage_route.route("/manage/suggestions")

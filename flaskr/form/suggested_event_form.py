@@ -13,3 +13,6 @@ class SuggestedEventForm(FlaskForm):
     picture_path = FileField(validators=[file_ext_validator(ext=["jpeg", "png", "jpg"])])
     about = TextAreaField("Описание события")
     submit = SubmitField('Отправить')
+
+    def setup_select_field(self, elements):
+        self.id_event_type.choices = elements

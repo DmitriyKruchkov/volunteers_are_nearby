@@ -59,12 +59,12 @@ def getAllEvents():
     if not redis_client.get(request_to_redis):
         db_sess = create_session()
         query = db_sess.query(Event.id,
-            Event.event_name,
-            Event.date_of_start,
-            Event.picture_path,
-            Event.address,
-            Event.id_responsible_user
-        )
+                              Event.event_name,
+                              Event.date_of_start,
+                              Event.picture_path,
+                              Event.address,
+                              Event.id_responsible_user
+                              )
         executed_query = []
         for i in query.all():
             i = i._asdict()
@@ -76,3 +76,9 @@ def getAllEvents():
     else:
         executed_query = json.loads(redis_client.get(request_to_redis))
     return executed_query
+
+
+def deleteEventByID(event_id):
+    with create_session() as db_sess:
+        db_sess.query(Event).filter(Event.id == event_id).delete()
+        db_sess.commit()

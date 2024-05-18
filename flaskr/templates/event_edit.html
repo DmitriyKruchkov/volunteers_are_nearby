@@ -2,56 +2,60 @@
 
 {% block content %}
 <div>
-<h1>Редактировать событие</h1>
-<p><img src="{{ url_for('static', filename=path) }}"/></p>
-<form action="" method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.picture_path(class="form-control") }}<br>
-        {% for error in form.picture_path.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+    <h1>Редактировать событие</h1>
+    <p><img src="{{ url_for('static', filename=path) }}"/></p>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.picture_path(class="form-control") }}<br>
+            {% for error in form.picture_path.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.event_name.label }}<br>
-        {{ form.event_name(class="form-control") }}<br>
-        {% for error in form.event_name.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+        </p>
+        <p>
+            {{ form.event_name.label }}<br>
+            {{ form.event_name(class="form-control") }}<br>
+            {% for error in form.event_name.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.about.label }}<br>
-        {{ form.about(class="form-control") }}<br>
-        {% for error in form.about.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+        </p>
+        <p>
+            {{ form.about.label }}<br>
+            {{ form.about(class="form-control") }}<br>
+            {% for error in form.about.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.date_of_start.label }}<br>
-        {{ form.date_of_start(class="form-control") }}<br>
-        {% for error in form.date_of_start.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+        </p>
+        <p>
+            {{ form.date_of_start.label }}<br>
+            {{ form.date_of_start(class="form-control") }}<br>
+            {% for error in form.date_of_start.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.address.label }}<br>
-        {{ form.address(class="form-control") }}<br>
-        {% for error in form.address.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+        </p>
+        <p>
+            {{ form.address.label }}<br>
+            {{ form.address(class="form-control") }}<br>
+            {% for error in form.address.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-    {{message}}
-</form>
-    </div>
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {{message}}
+    </form>
+    <div><a href="/manage/event/{{ event_id }}/delete">
+            <button class="btn btn-danger">Удалить</button>
+        </a></div>
+
+</div>
 {% endblock %}
