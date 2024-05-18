@@ -1,7 +1,6 @@
 import os
 import random
 from functools import wraps
-
 from flask import abort
 from flask_login import current_user
 from werkzeug.utils import secure_filename
@@ -54,7 +53,7 @@ def addUserFromForm(form):
         nickname=form.nickname.data,
         email=form.email.data,
         mode_id=1,
-        photo=download_picture(form.photo.data),
+        photo=download_picture(form.picture_path.data),
         about=form.about.data
     )
     user.set_password(form.password.data)

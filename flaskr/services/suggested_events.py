@@ -15,7 +15,7 @@ def addSuggestedEventFromForm(form):
         date_of_start=form.date_of_start.data,
         address=form.address.data,
         about=form.about.data,
-        picture_path=download_picture(form.photo.data, EVENT_DATA_DIR)
+        picture_path=download_picture(form.picture_path.data, EVENT_DATA_DIR)
     )
     db_sess.add(suggested_event)
     db_sess.commit()

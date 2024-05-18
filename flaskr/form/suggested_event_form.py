@@ -10,9 +10,6 @@ class SuggestedEventForm(FlaskForm):
     event_name = StringField('Название события', validators=[DataRequired()])
     date_of_start = DateTimeLocalField('Дата начала', format="%Y-%m-%dT%H:%M", validators=[DataRequired()])
     address = StringField('Местоположение', validators=[DataRequired()])
-    photo = FileField(validators=[file_ext_validator(ext=["jpeg", "png", "jpg"])])
+    picture_path = FileField(validators=[file_ext_validator(ext=["jpeg", "png", "jpg"])])
     about = TextAreaField("Описание события")
-    submit = SubmitField('Войти')
-
-    def setup_select_field(self, elements):
-        self.id_event_type.choices = elements
+    submit = SubmitField('Отправить')

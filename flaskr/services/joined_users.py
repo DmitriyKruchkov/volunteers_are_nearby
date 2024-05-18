@@ -1,5 +1,4 @@
 from sqlalchemy.exc import IntegrityError
-
 from data.joined_users import JoinedUsers
 from database import create_session
 
