@@ -22,7 +22,13 @@
             {% if current_user.is_authenticated %}
                 <form action="/event/{{ event.id }}/join" method="post">
                  <button type="submit" class="btn btn-primary btn-primary-join-event">Присоединиться</button>
-                </form>
+                </form><br/>
+                {{ message }}
+            {% endif %}
+
+            {% if current_user.mode_id in [2, 3]%}
+
+                 <a href="/manage/event/{{ event.id }}/edit"><button type="submit" class="btn btn-danger">Редактировать</button>
                 {{ message }}
             {% endif %}
 
