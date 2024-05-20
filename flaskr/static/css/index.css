@@ -358,3 +358,13 @@
     max-width: 135px;
 }
 /*** Конец таблицы управления событиями  **/
+/** таблица в предложке **/
+.button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-container a {
+            display: inline-block;
+        }
+/** конец таблица в предложке **/

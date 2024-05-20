@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect
 from flask_login import login_required
 from form.event_edit_form import EventEditForm
-from services.manage_event import loadEventsUpdates
+from services.manage_event import loadEventsUpdates, addSuggestion, deleteSuggestion
+from services.suggested_events import getSuggestedEvents
 from services.users import privilege_mode, getUsers, addWarning, addForgiveness, userUpgrade, userDowngrade
 from services.events import getAllEvents, getEventByID, deleteEventByID
 
@@ -87,5 +88,23 @@ def delete_event(event_id):
 @manage_route.route("/manage/suggestions")
 @login_required
 @privilege_mode
-def manage_suggestions():
-    return
+def manageSuggestions():
+    events = getSuggestedEvents()
+    return render_template("manage_suggestions.html", events=events)
+
+
+@manage_route.route("/manage/suggestion/<int:suggestion_id>/add")
+@login_required
+@privilege_mode
+def addSuggestionRoute(suggestion_id):
+    addSuggestion(suggestion_id)
+    deleteSuggestion(suggestion_id)
+    return redirect("/manage/suggestions")
+
+
+@manage_route.route("/manage/suggestion/<int:suggestion_id>/delete")
+@login_required
+@privilege_mode
+def deleteSuggestionRoute(suggestion_id):
+    deleteSuggestion(suggestion_id)
+    return redirect("/manage/suggestions")

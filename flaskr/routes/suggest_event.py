@@ -4,6 +4,7 @@ from flask_login import login_required
 from form.suggested_event_form import SuggestedEventForm
 from services.event_types import getEventTypes
 from services.suggested_events import addSuggestedEventFromForm
+from services.users import privilege_mode
 
 suggest_router = Blueprint("suggested_events", __name__)
 

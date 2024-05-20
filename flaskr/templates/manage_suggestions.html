@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Управление мероприятиями</h1>
+<table>
+    <thead>
+    <tr>
+        <th class="table-manage-events th-manage-events">ID</th>
+        <th class="table-manage-events th-manage-events">Изображение</th>
+        <th class="table-manage-events th-manage-events">Название события</th>
+        <th class="table-manage-events th-manage-events">Дата начала</th>
+        <th class="table-manage-events th-manage-events">ID ответственного</th>
+        <th class="table-manage-events th-manage-events">Адрес</th>
+        <th class="table-manage-events th-manage-events">Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in events %}
+    <tr class="tr-manage-events">
+        <td class="table-text-manage-events td-manage-events">{{ event.id }}</td>
+        <td class="table-text-manage-events td-manage-events"><img class="img-manage-events" src="{{ url_for('static', filename=event.picture_path) }}" /></td>
+        <td class="table-text-manage-events td-manage-events">{{ event.event_name }}</td>
+        <td class="table-text-manage-events td-manage-events">{{ event.date_of_start }}</td>
+        <td class="table-text-manage-events td-manage-events">{{ event.id_responsible_user }}</td>
+        <td class="table-text-manage-events td-manage-events">{{ event.address }}</td>
+        <td class="table-text-manage-events td-manage-events">
+                <div class="button-container">
+                    <a href="/manage/suggestion/{{event.id}}/add"><button class="btn btn-primary">add</button></a>
+                    <a href="/manage/suggestion/{{event.id}}/delete"><button class="btn btn-danger">delete</button></a>
+                </div>
+            </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
