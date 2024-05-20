@@ -53,7 +53,7 @@ def addUserFromForm(form):
         nickname=form.nickname.data,
         email=form.email.data,
         mode_id=1,
-        photo=download_picture(form.picture_path.data),
+        photo=download_picture(form.photo.data),
         about=form.about.data
     )
     user.set_password(form.password.data)
