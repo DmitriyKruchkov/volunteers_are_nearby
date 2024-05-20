@@ -1,8 +1,10 @@
 import os
 import random
+from functools import wraps
+from flask import abort
 from flask_login import current_user
 from werkzeug.utils import secure_filename
-from config import DATA_DIR, NON_AVATAR_PATH
+from config import USER_DATA_DIR, NON_AVATAR_PATH
 from data.users import User
 from database import create_session
 
@@ -15,6 +17,23 @@ def getUserByEmail(email):
 def getUserByID(user_id):
     db_sess = create_session()
     return db_sess.query(User).get(user_id)
+
+
+def load_user(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).get(user_id)
+    if user and user.warnings_count < 2:
+        return user
+
+
+def privilege_mode(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if current_user.mode_id not in [2, 3]:
+            abort(403)  # Запретить доступ пользователям без роли администратора
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 def checkUsers(email, nickname):
@@ -34,7 +53,7 @@ def addUserFromForm(form):
         nickname=form.nickname.data,
         email=form.email.data,
         mode_id=1,
-        photo=download_picture(form.photo.data),
+        photo=download_picture(form.picture_path.data),
         about=form.about.data
     )
     user.set_password(form.password.data)
@@ -43,24 +62,26 @@ def addUserFromForm(form):
     db_sess.close()
 
 
-def download_picture(f):
+def download_picture(f, parent_dir=USER_DATA_DIR):
     filename = secure_filename(f.filename)
     if filename:
-        directory = create_random_dir_name()
-        os.mkdir(os.path.join('static', DATA_DIR, directory))
+        if not os.path.exists(os.path.join('static', parent_dir)):
+            os.mkdir(os.path.join('static', parent_dir))
+        directory = create_random_dir_name(parent_dir)
+        os.mkdir(os.path.join('static', parent_dir, directory))
         path_to_save = os.path.join(
-            'static', DATA_DIR, directory, filename
+            'static', parent_dir, directory, filename
         )
         f.save(path_to_save)
-        return os.path.join(DATA_DIR, directory, filename)
+        return os.path.join(parent_dir, directory, filename)
     return NON_AVATAR_PATH
 
 
-def create_random_dir_name():
+def create_random_dir_name(parent_dir):
     len_of_hash = 16
     alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
     new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
-    while new_dir_name in os.listdir(os.path.join('static', DATA_DIR)):
+    while new_dir_name in os.listdir(os.path.join('static', parent_dir)):
         new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
     return new_dir_name
 
@@ -93,3 +114,74 @@ def changePassword(form):
         db_sess.close()
         return True
     return False
+
+
+def getUsers():
+    db_sess = create_session()
+    users = db_sess.query(User).filter(User.mode_id < current_user.mode_id).all()
+    db_sess.close()
+    return users
+
+
+def addWarning(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.warnings_count < 2:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.warnings_count: User.warnings_count + 1}
+                )
+                db_sess.commit()
+    db_sess.close()
+
+
+def addForgiveness(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.warnings_count > 0:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.warnings_count: User.warnings_count - 1}
+                )
+                db_sess.commit()
+    db_sess.close()
+
+
+def userUpgrade(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.mode_id == 1:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.mode_id: 2}
+                )
+                db_sess.commit()
+    db_sess.close()
+
+
+def userDowngrade(user_id):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(
+        User.id == user_id
+    )
+    executed = user.first()
+    if executed:
+        if executed.mode_id == 2:
+            if executed.mode_id not in [3, current_user.mode_id]:
+                user.update(
+                    {User.mode_id: 1}
+                )
+                db_sess.commit()
+    db_sess.close()

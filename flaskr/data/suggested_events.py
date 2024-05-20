@@ -1,11 +1,9 @@
 import sqlalchemy
-
-
 import database
 
 
-class Event(database.SqlAlchemyBase):
-    __tablename__ = 'events'
+class SuggestedEvent(database.SqlAlchemyBase):
+    __tablename__ = 'suggested_events'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)

@@ -48,6 +48,20 @@ def global_init(db_file):
         except IntegrityError:
             continue
 
+    values = [
+        {"id": 1, "name": "Тип_1"},
+        {"id": 2, "name": "Тип_2"},
+        {"id": 3, "name": "Тип_3"},
+        {"id": 4, "name": "ПОМОЩЬ"}
+    ]
+    for value in values:
+        try:
+            session.execute(
+                text("INSERT INTO event_types (id, name) VALUES (:id, :name)"),
+                value
+            )
+        except IntegrityError:
+            continue
     session.commit()
 
     session.close()
