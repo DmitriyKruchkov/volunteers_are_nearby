@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Личный кабинет {{ current_user.name }} {{ current_user.surname }}</h1>
+<style>
+    h1 {
+        text-align: center;
+    }
+</style>
+
+<h1>    </h1>
 <div id="sidebar">
   <ul>
     <li><a href="/account/info">Информация об аккаунте</a></li>
@@ -12,6 +18,7 @@
   {% if current_user.mode_id in [2, 3] %}
 <a href="/manage"><button class="btn btn-danger">Панель управления</button></a>
 {% endif %}
+
 
 </div>
 {% block funcs %}{% endblock %}

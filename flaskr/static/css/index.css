@@ -368,3 +368,86 @@
             display: inline-block;
         }
 /** конец таблица в предложке **/
+
+img {
+        width: 60%; /* Ширина изображения составит 50% от родительского элемента */
+        height: auto; /* Автоматический расчет высоты, чтобы изображение не искажалось */
+    }
+
+
+a {
+    color: #007bff; /* Голубой цвет ссылок */
+    text-decoration: none; /* Убрать подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Добавить подчеркивание при наведении */
+}
+
+nav .navbar-light .bg-light {
+    justify-content: flex-start; /* Выравнивание элементов навигации влево */
+}
+
+p {
+    display: flex; /* Использование flexbox для выравнивания ссылок и текста "или" */
+    align-items: center; /* Центрирование элементов по вертикали */
+    justify-content: flex-start; /* Выравнивание элементов внутри <p> влево */
+    margin-right: 70px; /* Отступ справа */
+}
+
+
+
+.auth-container {
+    background-color: #80cbc4; /* Голубо-зелёный цвет блока авторизации */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    margin: auto;
+    margin-top: 50px; /* Отступ сверху страницы */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #fff;
+
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 20px; /* Уменьшенный размер */
+    margin-bottom: 30px; /* Отступ снизу */
+}
+
+.form-group {
+    margin-bottom: 5px; /* Уменьшенное расстояние между блоками */
+}
+
+.custom-input {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    display: block;
+    width: 100%;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px; /* Отступ сверху для кнопки */
+}
+
+
+/* --- Для формы регистрации --- */
+.btn-primary {
+        margin-top: 20px;
+    }
+#id_about {
+        margin-top: 20px;
+    }
+
+
+
+
