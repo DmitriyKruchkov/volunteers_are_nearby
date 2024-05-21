@@ -5,6 +5,9 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import os
 
+from data.users import User
+from services.users import download_picture
+
 SqlAlchemyBase = orm.declarative_base()
 
 __factory = None
@@ -33,6 +36,23 @@ def global_init(db_file):
     SqlAlchemyBase.metadata.create_all(engine)
 
     session = __factory()
+
+    user = User(
+        surname=os.getenv("SURNAME"),
+        name=os.getenv("NAME"),
+        nickname=os.getenv("NICKNAME"),
+        email=os.getenv("EMAIL"),
+        mode_id=3,
+        photo=download_picture(""),
+        about=os.getenv("SURNAME")
+    )
+    user.set_password(os.getenv("PASSWORD"))
+    try:
+        session.add(user)
+        session.commit()
+    except IntegrityError:
+        pass
+
     values = [
         {"role_id": 1, "name": "Пользователь"},
         {"role_id": 2, "name": "Модератор"},
@@ -49,10 +69,10 @@ def global_init(db_file):
             continue
 
     values = [
-        {"id": 1, "name": "Тип_1"},
-        {"id": 2, "name": "Тип_2"},
-        {"id": 3, "name": "Тип_3"},
-        {"id": 4, "name": "ПОМОЩЬ"}
+        {"id": 1, "name": "Cоциальное"},
+        {"id": 2, "name": "Патриотическое"},
+        {"id": 3, "name": "Зооволонтерство"},
+        {"id": 4, "name": "Научное"}
     ]
     for value in values:
         try:

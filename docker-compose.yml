@@ -11,6 +11,15 @@ services:
       - internet
     depends_on:
       - caching-service
+  mailer-service:
+    container_name: mailer
+    build:
+      context: mailer_service/
+      dockerfile: Dockerfile
+    ports:
+      - "5150:5150"
+    networks:
+      - internet
   document-service:
     container_name: nginx
     image: nginx:alpine
