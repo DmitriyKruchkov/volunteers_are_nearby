@@ -9,3 +9,4 @@ NON_AVATAR_PATH = "users_avatars/default.jpg"
 REDIS_HOST = "redis"
 # REDIS_HOST = "wsl.localhost"
 REDIS_PORT = 6379
+REDIS_UPDATE_SECONDS = 10
