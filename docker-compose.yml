@@ -17,6 +17,7 @@ services:
       - internet
     depends_on:
       - caching-service
+      - mailer-service
   mailer-service:
     container_name: mailer
     build:
