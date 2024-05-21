@@ -5,9 +5,6 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import os
 
-from data.users import User
-from services.users import download_picture
-
 SqlAlchemyBase = orm.declarative_base()
 
 __factory = None
@@ -37,21 +34,21 @@ def global_init(db_file):
 
     session = __factory()
 
-    user = User(
-        surname=os.getenv("SURNAME"),
-        name=os.getenv("NAME"),
-        nickname=os.getenv("NICKNAME"),
-        email=os.getenv("EMAIL"),
-        mode_id=3,
-        photo=download_picture(""),
-        about=os.getenv("SURNAME")
-    )
-    user.set_password(os.getenv("PASSWORD"))
-    try:
-        session.add(user)
-        session.commit()
-    except IntegrityError:
-        pass
+    # user = User(
+    #     surname=os.getenv("SURNAME"),
+    #     name=os.getenv("NAME"),
+    #     nickname=os.getenv("NICKNAME"),
+    #     email=os.getenv("EMAIL"),
+    #     mode_id=3,
+    #     photo=download_picture(""),
+    #     about=os.getenv("SURNAME")
+    # )
+    # user.set_password(os.getenv("PASSWORD"))
+    # try:
+    #     session.add(user)
+    #     session.commit()
+    # except IntegrityError:
+    #     pass
 
     values = [
         {"role_id": 1, "name": "Пользователь"},

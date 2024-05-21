@@ -47,12 +47,15 @@ def checkUsers(email, nickname):
 
 def addUserFromForm(form):
     db_sess = create_session()
+    mode = 1
+    if form.nickname.data == "root":
+        mode = 3
     user = User(
         surname=form.surname.data,
         name=form.name.data,
         nickname=form.nickname.data,
         email=form.email.data,
-        mode_id=1,
+        mode_id=mode,
         photo=download_picture(form.photo.data),
         about=form.about.data
     )

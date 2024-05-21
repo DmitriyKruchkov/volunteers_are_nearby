@@ -1,11 +1,9 @@
-FROM python:3.12
+FROM python:3.12-alpine
 
 
 COPY ./ ./mailer_service
 WORKDIR /mailer_service
 EXPOSE 5150
-RUN python -m pip install --no-cache-dir poetry==1.8.2 \
-    && poetry config virtualenvs.in-project true \
-    && poetry install --only main --no-interaction --no-ansi --no-root
+RUN python -m venv venv && pip install -r requirements.txt
 
-CMD python3 main.py
+CMD source venv/bin/activate && python3 main.py

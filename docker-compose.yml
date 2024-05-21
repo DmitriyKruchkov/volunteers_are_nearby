@@ -21,7 +21,7 @@ services:
   mailer-service:
     container_name: mailer
     build:
-      context: mailer_service/
+      context: mailer_servicвщслe/
       dockerfile: Dockerfile
     ports:
       - "5150:5150"
