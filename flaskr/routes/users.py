@@ -26,7 +26,7 @@ def login():
             # После добавления куков разкомментировать
             # login_user(user, remember=form.remember_me.data)
             login_user(user)
-            return redirect("/")
+            return redirect("/events")
         return render_template(
             template_name_or_list='login.html',
             message="Неправильный логин или пароль",

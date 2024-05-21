@@ -16,5 +16,5 @@ def create():
     form.setup_select_field(getEventTypes())
     if form.validate_on_submit():
         addSuggestedEventFromForm(form)
-        return redirect('/')
+        return redirect('/events')
     return render_template('suggest_event.html', form=form)

@@ -9,40 +9,21 @@
           crossorigin="anonymous">
     <title>{{title}}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <style>
-        .rounded-img {
-            border-radius: 50%; /* Делает изображение круглым */
-            width: 48px;
-            height: 48px;
-            object-fit: cover; /* Гарантирует, что изображение заполнит весь круг */
-        }
-
-        .navbar-brand {
-            margin-left: 100px;
-        }
-
-        .rounded-img {
-            margin-right: 70px;
-        }
-
-    </style>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="/">Волонтеры рядом</a>
+        <a class="navbar-brand" href="/events">Волонтеры рядом</a>
         {% if current_user.is_authenticated %}
-
         <div class="d-flex align-items-center">
             <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
             <a href="/account"><img class="rounded-img" src="{{ url_for('static', filename=current_user.photo) }}"></a>
         </div>
-
         {% else %}
-        <p style="margin-right: 70px;">
-            <a href="/register" style="color: #007bff; text-decoration: none;">Зарегистрироваться</a>
-            <span style="color: grey; margin: 0 10px;">или</span>
-            <a href="/login" style="color: #007bff; text-decoration: none;">Войти</a>
+        <p class="auth-links">
+            <a href="/register" class="auth-link">Зарегистрироваться</a>
+            <span class="separator">или</span>
+            <a href="/login" class="auth-link">Войти</a>
         </p>
         {% endif %}
     </nav>
