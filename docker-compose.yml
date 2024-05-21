@@ -7,6 +7,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    environment:
+      - SURNAME=${SURNAME}
+      - NAME=${NAME}
+      - NICKNAME=${NICKNAME}
+      - EMAIL=${EMAIL}
+      - PASSWORD=${PASSWORD}
     networks:
       - internet
     depends_on:
@@ -18,6 +24,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5150:5150"
+    environment:
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
     networks:
       - internet
   document-service:
