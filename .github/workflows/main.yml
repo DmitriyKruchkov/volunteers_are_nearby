@@ -11,6 +11,7 @@ jobs:
       - name: Setup Python environment and linting
         run: |
           python3 -m venv venv
+          whoami
           source venv/bin/activate
           pip install poetry
           poetry install
