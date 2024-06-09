@@ -9,7 +9,7 @@ from data.roles import Role
 
 def getRole(mode_id):
     db_sess = create_session()
-    request_to_redis = f'role-id-{mode_id}'
+    # request_to_redis = f'role-id-{mode_id}'
     # if not redis_client.get(request_to_redis):
     role = db_sess.query(Role).filter(
         Role.role_id == mode_id
