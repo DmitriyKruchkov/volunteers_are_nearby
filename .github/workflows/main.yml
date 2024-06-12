@@ -109,8 +109,8 @@ jobs:
 
       - name: Deploy
         run: |
-          docker-compose down
-          docker-compose up -d --build
+          docker compose down
+          docker compose up -d --build
 
       - name: Notify on failure
         if: ${{ failure() }}
