@@ -73,6 +73,7 @@ jobs:
 
       - name: Setup Python environment
         run: |
+          chmod -R 777 venv
           source venv/bin/activate
       - name: Documentation
         run: |
