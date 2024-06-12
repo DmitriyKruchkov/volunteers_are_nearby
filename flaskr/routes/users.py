@@ -24,9 +24,9 @@ def login():
         user = getUserByEmail(form.email.data)
         if user and user.check_password(form.password.data):
             # После добавления куков разкомментировать
-            # login_user(user, remember=form.remember_me.data)
+            # login_user(user, remember=form.remember_me.models)
             login_user(user)
-            return redirect("/")
+            return redirect("/events")
         return render_template(
             template_name_or_list='login.html',
             message="Неправильный логин или пароль",

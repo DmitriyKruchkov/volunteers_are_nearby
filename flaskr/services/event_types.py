@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+from config import REDIS_UPDATE_SECONDS
 from core import redis_client
 from database import create_session
 from data.event_types import EventType
@@ -17,7 +18,7 @@ def getEventTypes():
         for i in query:
             i = i.__dict__
             types.append((i["id"], i["name"]))
-        redis_client.set(request_to_redis, json.dumps(types), ex=300)
+        redis_client.set(request_to_redis, json.dumps(types), ex=REDIS_UPDATE_SECONDS)
     else:
          types = json.loads(redis_client.get(request_to_redis))
     return types

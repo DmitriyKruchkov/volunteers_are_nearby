@@ -9,21 +9,21 @@
           crossorigin="anonymous">
     <title>{{title}}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-
 </head>
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="/">Волонтеры рядом</a>
+        <a class="navbar-brand" href="/events">Волонтеры рядом</a>
         {% if current_user.is_authenticated %}
-        <a href="/account"><button type="button" class="btn btn-info"><b>Личный кабинет</b></button></a>
-        <img class="navbar-brand" src="{{ url_for('static', filename=current_user.photo) }}", width="64" height="64">
-        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+            <a href="/account"><img class="rounded-img" src="{{ url_for('static', filename=current_user.photo) }}"></a>
         </div>
         {% else %}
-        <p>
-            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-            <a class="btn btn-success" href="/login">Войти</a>
+        <p class="auth-links">
+            <a href="/register" class="auth-link">Зарегистрироваться</a>
+            <span class="separator">или</span>
+            <a href="/login" class="auth-link">Войти</a>
         </p>
         {% endif %}
     </nav>

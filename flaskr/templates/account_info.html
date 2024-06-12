@@ -1,18 +1,39 @@
 {% extends "account_base.html" %}
 
 {% block funcs %}
- <div class="container-info">
-  <div class="left-column-info">
 
-        <p>Имя:<br/> {{ current_user.name }}</p><br/>
-        <p>Фамилия:<br/> {{ current_user.surname }}</p><br/>
-        <p>Никнейм:<br/> {{ current_user.nickname }}</p><br/>
-        <p>О себе:<br/> {{ current_user.about }}</p><br/>
-        <p>Email:<br/> {{ current_user.email }}</p><br/>
-        <p>Роль:<br/> {{ role_name }}</p><br/>
- </div>
-  <div class="right-column-info">
-      <p>Фото профиля:</p><img src="{{ url_for('static', filename=current_user.photo) }}" alt="Фото профиля" width="200" height="300">
-      </div>
+<h2>Информация об аккаунте</h2>
+<div class="container-info">
+    <div class="column">
+        <div class="profile-section">
+            <img src="{{ url_for('static', filename=current_user.photo) }}" alt="Фото профиля" class="profile-photo">
+            <div class="buttons-container">
+                <button onclick="window.location.href='/account/edit'" class="button">Редактировать</button>
+                <button onclick="window.location.href='/account/password'" class="button">Сменить пароль</button>
+                {% if current_user.mode_id in [2, 3] %}
+                <a href="/manage">
+                    <button class="btn-danger button">Панель управления</button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <p>Имя:</p>
+        <p class="user-info">{{ current_user.name }}</p>
+        <p>Фамилия:</p>
+        <p class="user-info">{{ current_user.surname }}</p>
+        <p>Никнейм:</p>
+        <p class="user-info">{{ current_user.nickname }}</p>
+    </div>
+    <div class="column">
+        <p>О себе:</p>
+        <p class="user-info">{{ current_user.about }}</p>
+        <p>Email:</p>
+        <p class="user-info">{{ current_user.email }}</p>
+        <p>Роль:</p>
+        <p class="user-info">{{ role_name }}</p>
+    </div>
 </div>
+
 {% endblock %}

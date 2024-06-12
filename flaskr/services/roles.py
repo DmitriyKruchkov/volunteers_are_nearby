@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+
+from config import REDIS_UPDATE_SECONDS
 from core import redis_client
 from database import create_session
 from data.roles import Role
@@ -13,7 +15,7 @@ def getRole(mode_id):
         Role.role_id == mode_id
     ).first()
     db_sess.close()
-        # redis_client.set(request_to_redis, json.dumps(role))
+    #     redis_client.set(request_to_redis, json.dumps(role), ex=REDIS_UPDATE_SECONDS)
     # else:
     #     role = json.loads(redis_client.get(request_to_redis))
     return role

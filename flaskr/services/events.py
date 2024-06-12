@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+
+from config import REDIS_UPDATE_SECONDS
 from core import redis_client
 from data.events import Event
 from data.users import User
@@ -22,7 +24,7 @@ def getActualEvents():
             i = i._asdict()
             i['date_of_start'] = i['date_of_start'].strftime('%d.%m.%Y %H:%M')
             executed_query.append(i)
-        redis_client.set(request_to_redis, json.dumps(executed_query), ex=300)
+        redis_client.set(request_to_redis, json.dumps(executed_query), ex=REDIS_UPDATE_SECONDS)
         db_sess.close()
         print(executed_query)
     else:
@@ -47,7 +49,7 @@ def getEventByID(event_id):
         )
         executed_query = query.first()._asdict()
         executed_query['date_of_start'] = executed_query['date_of_start'].strftime('%d.%m.%Y %H:%M')
-        redis_client.set(request_to_redis, json.dumps(executed_query), ex=300)
+        redis_client.set(request_to_redis, json.dumps(executed_query), ex=REDIS_UPDATE_SECONDS)
     else:
         executed_query = json.loads(redis_client.get(request_to_redis))
     return executed_query
@@ -70,7 +72,7 @@ def getAllEvents():
             i = i._asdict()
             i['date_of_start'] = i['date_of_start'].strftime('%d.%m.%Y %H:%M')
             executed_query.append(i)
-        redis_client.set(request_to_redis, json.dumps(executed_query), ex=300)
+        redis_client.set(request_to_redis, json.dumps(executed_query), ex=REDIS_UPDATE_SECONDS)
         db_sess.close()
         print(executed_query)
     else:

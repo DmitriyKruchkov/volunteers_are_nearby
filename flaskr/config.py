@@ -9,3 +9,7 @@ NON_AVATAR_PATH = "users_avatars/default.jpg"
 REDIS_HOST = "redis"
 # REDIS_HOST = "wsl.localhost"
 REDIS_PORT = 6379
+REDIS_UPDATE_SECONDS = 10
+MAILER_HOST = "mailer"
+# MAILER_HOST = "127.0.0.1"
+MAILER_PORT = 5150
