@@ -12,9 +12,9 @@ jobs:
         run: |
           python3 -m venv venv
           source venv/bin/activate
-          pip install poetry
-          poetry install
-          ruff check
+          python3 -m pip install poetry
+          python3 -m poetry install
+          python3 -m ruff check
 
       - name: Upload venv
         uses: actions/upload-artifact@v4
@@ -44,9 +44,9 @@ jobs:
 
       - name: Setup Python environment
         run: |
-          chmod -R 777 venv
+          sudo chmod -R 777 venv
           source venv/bin/activate
-          pytest
+          python3 -m pytest
           echo "$GITHUB_JOB is ok" >> ./log-CI
 
       - name: Notify on failure
@@ -73,6 +73,8 @@ jobs:
           
       - name: Documentation
         run: |
+          sudo chmod -R 777 venv
+          sudo chmod -R 777 docs
           source venv/bin/activate
           cd docs
           python3 create_all_docs.py
