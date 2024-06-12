@@ -70,13 +70,10 @@ jobs:
         with:
           name: venv
           path: ./venv
-
-      - name: Setup Python environment
-        run: |
-          chmod -R 777 venv
-          source venv/bin/activate
+          
       - name: Documentation
         run: |
+          source venv/bin/activate
           cd docs
           python3 create_all_docs.py
           cd ..
