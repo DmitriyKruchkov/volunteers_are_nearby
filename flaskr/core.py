@@ -7,11 +7,7 @@ import database
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
-db_file = DB_PATH
-conn_str = f'sqlite:///{db_file.strip()}?check_same_thread=False'
-app.config['SQLALCHEMY_DATABASE_URI'] = conn_str
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-database.global_init(DB_PATH)
+database.global_init()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.user_loader(load_user)

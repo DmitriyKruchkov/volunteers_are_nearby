@@ -18,6 +18,7 @@ services:
     depends_on:
       - caching-service
       - mailer-service
+
   mailer-service:
     container_name: mailer
     build:
@@ -32,6 +33,7 @@ services:
       - SMTP_PASSWORD=${SMTP_PASSWORD}
     networks:
       - internet
+
   document-service:
     container_name: nginx
     image: nginx:alpine
@@ -39,13 +41,45 @@ services:
       - "5050:80"
     volumes:
       - ./docs/build/html/:/usr/share/nginx/html:ro
+
   caching-service:
     container_name: redis
-    image: redis:alpine
+    image: redis:7.4-rc1-alpine3.20
     ports:
       - "5100:6379"
     networks:
       - internet
+
+  postgres:
+    container_name: postgres
+    image: postgres:alpine3.20
+    environment:
+      POSTGRES_DB: "volunteerium"
+      POSTGRES_USER: "volunteer"
+      POSTGRES_PASSWORD: "volunteer"
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:8.8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "volunteer@volunteer.com"
+      PGADMIN_DEFAULT_PASSWORD: "volunteer"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - /var/lib/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5200:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+
 networks:
   internet:
     name: internet
