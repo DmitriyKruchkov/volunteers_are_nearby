@@ -69,16 +69,9 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: "volunteer@mail.ru"
       PGADMIN_DEFAULT_PASSWORD: "volunteer"
-    volumes:
-      - /pga_data:/var/lib/pgadmin
     ports:
       - "5200:80"
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 1G
+
 
 networks:
   internet:
