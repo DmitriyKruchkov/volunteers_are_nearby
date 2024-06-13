@@ -58,7 +58,7 @@ services:
       POSTGRES_USER: "volunteer"
       POSTGRES_PASSWORD: "volunteer"
     ports:
-      - "5432:5432"
+      - "5250:5432"
     volumes:
       - /var/lib/postgresql/data:/var/lib/postgresql/data
 
