@@ -1,22 +1,14 @@
-FROM python:3.9-slim
+FROM python:3.11.9
 
-# Set the working directory
+
+COPY ./ ./volunteers_are_nearby
 WORKDIR /volunteers_are_nearby
+EXPOSE 5000
+RUN pip install -r requirements.txt
 
-# Copy the requirements file
-COPY requirements.txt .
+CMD cd flaskr && python3 app.py
 
-# Install virtualenv package
-RUN python3 -m pip install --upgrade pip \
-    && python3 -m pip install virtualenv
 
-# Create a virtual environment and install dependencies
-RUN python3 -m venv venv \
-    && . venv/bin/activate \
-    && pip install -r requirements.txt
 
-# Copy the rest of the application code
-COPY . .
 
-# Command to run the application
-CMD ["venv/bin/python", "app.py"]
+
