@@ -1,17 +1,22 @@
-FROM python:3.11.9-slim-bookworm
+FROM python:3.9-slim
 
-
-COPY ./ ./volunteers_are_nearby
+# Set the working directory
 WORKDIR /volunteers_are_nearby
-EXPOSE 5000
+
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install virtualenv package
+RUN python3 -m pip install --upgrade pip \
+    && python3 -m pip install virtualenv
+
+# Create a virtual environment and install dependencies
 RUN python3 -m venv venv \
-    && ls -al \
-    && source venv/bin/activate \
-    && python3 -m pip install -r requirements.txt
+    && . venv/bin/activate \
+    && pip install -r requirements.txt
 
-CMD source venv/bin/activate && cd flaskr && python3 app.py
+# Copy the rest of the application code
+COPY . .
 
-
-
-
-
+# Command to run the application
+CMD ["venv/bin/python", "app.py"]
