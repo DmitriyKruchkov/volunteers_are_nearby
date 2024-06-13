@@ -52,7 +52,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres:alpine3.20
+    image: postgres
     environment:
       POSTGRES_DB: "volunteerium"
       POSTGRES_USER: "volunteer"
