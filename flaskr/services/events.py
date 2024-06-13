@@ -26,7 +26,6 @@ def getActualEvents():
             executed_query.append(i)
         redis_client.set(request_to_redis, json.dumps(executed_query), ex=REDIS_UPDATE_SECONDS)
         db_sess.close()
-        print(executed_query)
     else:
         executed_query = json.loads(redis_client.get(request_to_redis))
     return executed_query
@@ -74,7 +73,6 @@ def getAllEvents():
             executed_query.append(i)
         redis_client.set(request_to_redis, json.dumps(executed_query), ex=REDIS_UPDATE_SECONDS)
         db_sess.close()
-        print(executed_query)
     else:
         executed_query = json.loads(redis_client.get(request_to_redis))
     return executed_query
