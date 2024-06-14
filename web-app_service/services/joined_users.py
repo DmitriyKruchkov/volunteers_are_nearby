@@ -10,11 +10,18 @@ import requests
 
 
 def getJoinedUsers():
+    """
+    Returns: Список всех присоединившихся к событиям пользователей
+    """
     db_sess = create_session()
     return db_sess.query(JoinedUsers).all()
 
 
 def joinUserToEvent(email, event_id):
+    """
+        Присоединяет пользователя к событию и
+        отправляет запрос на рассылку от сервиса mailer
+    """
     db_sess = create_session()
     url = f"http://{MAILER_HOST}:{MAILER_PORT}/alert/"
     event = db_sess.query(Event).filter(Event.id == event_id).first()

@@ -85,6 +85,9 @@ def logout():
 @user_router.route("/account/info")
 @login_required
 def account_info():
+    """
+    Получение информации об аккаунте
+    """
     role = getRole(current_user.mode_id)
     return render_template(
         template_name_or_list="account_info.html",
@@ -95,6 +98,9 @@ def account_info():
 @user_router.route("/account/edit", methods=['GET', 'POST'])
 @login_required
 def account_edit():
+    """
+       Форма редактирования информации об аккаунте
+        """
     form = AccountEditForm()
     if form.validate_on_submit():
         loadNewData(form)
@@ -106,6 +112,9 @@ def account_edit():
 @user_router.route("/account/password", methods=['GET', 'POST'])
 @login_required
 def account_password():
+    """
+        Форма смены пароля от аккаунта
+    """
     form = AccountPasswordForm()
     if form.validate_on_submit():
         if form.new_password.data != form.new_password_again.data:

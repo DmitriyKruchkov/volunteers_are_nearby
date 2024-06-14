@@ -13,6 +13,10 @@ manage_route = Blueprint("admin", __name__)
 @login_required
 @privilege_mode
 def panel():
+    """
+    Панель управления, доступна только
+     администраторам и модераторам
+        """
     return render_template("manage.html")
 
 
@@ -20,6 +24,10 @@ def panel():
 @login_required
 @privilege_mode
 def manage_users():
+    """
+    Панель управления пользователями, доступна только
+     администраторам и модераторам
+            """
     users = getUsers()
     return render_template("manage_users.html", users=users)
 
@@ -28,6 +36,10 @@ def manage_users():
 @login_required
 @privilege_mode
 def ban_user(user_id):
+    """
+    Блокировка пользователя, доступно только
+     администраторам и модераторам
+                """
     addWarning(user_id)
     return redirect("/manage/users")
 
@@ -36,6 +48,10 @@ def ban_user(user_id):
 @login_required
 @privilege_mode
 def unban_user(user_id):
+    """
+    Заблокировка пользователя, доступно только
+     администраторам и модераторам
+                    """
     addForgiveness(user_id)
     return redirect("/manage/users")
 
@@ -44,6 +60,10 @@ def unban_user(user_id):
 @login_required
 @privilege_mode
 def upgrade_user(user_id):
+    """
+    Повышение пользователя, доступно только
+     администраторам и модераторам
+                    """
     userUpgrade(user_id)
     return redirect("/manage/users")
 
@@ -52,6 +72,10 @@ def upgrade_user(user_id):
 @login_required
 @privilege_mode
 def downgrade_user(user_id):
+    """
+        Понижение пользователя, доступно только
+         администраторам и модераторам
+                        """
     userDowngrade(user_id)
     return redirect("/manage/users")
 
@@ -60,6 +84,10 @@ def downgrade_user(user_id):
 @login_required
 @privilege_mode
 def manage_events():
+    """
+        Панель управления событиями, доступно только
+         администраторам и модераторам
+                        """
     events = getAllEvents()
     return render_template("manage_event.html", events=events)
 
@@ -68,6 +96,10 @@ def manage_events():
 @login_required
 @privilege_mode
 def edit_event(event_id):
+    """
+        Панель редактирования события, доступно только
+         администраторам и модераторам
+                        """
     event = getEventByID(event_id)
     form = EventEditForm()
     if form.validate_on_submit():
@@ -81,6 +113,9 @@ def edit_event(event_id):
 @login_required
 @privilege_mode
 def delete_event(event_id):
+    """
+    Удаление события по ID
+                            """
     deleteEventByID(event_id)
     return redirect("/manage/events")
 
@@ -89,6 +124,11 @@ def delete_event(event_id):
 @login_required
 @privilege_mode
 def manageSuggestions():
+    """
+    Панель управления предложенными событиями,
+     доступно только
+     администраторам и модераторам
+                            """
     events = getSuggestedEvents()
     return render_template("manage_suggestions.html", events=events)
 
@@ -97,6 +137,10 @@ def manageSuggestions():
 @login_required
 @privilege_mode
 def addSuggestionRoute(suggestion_id):
+    """
+            Добавление предложенной новости к основным, доступно только
+             администраторам и модераторам
+                            """
     addSuggestion(suggestion_id)
     deleteSuggestion(suggestion_id)
     return redirect("/manage/suggestions")
@@ -106,5 +150,9 @@ def addSuggestionRoute(suggestion_id):
 @login_required
 @privilege_mode
 def deleteSuggestionRoute(suggestion_id):
+    """
+    Удаление предложенной новости, доступно только
+     администраторам и модераторам
+                                """
     deleteSuggestion(suggestion_id)
     return redirect("/manage/suggestions")

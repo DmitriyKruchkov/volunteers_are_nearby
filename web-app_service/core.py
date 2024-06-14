@@ -5,6 +5,7 @@ from config import SECRET_KEY, REDIS_HOST, REDIS_PORT
 from services.users import load_user
 import database
 
+# подключение всех сервисов к приложению
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 database.global_init()

@@ -6,6 +6,7 @@ from routes.suggest_event import suggest_router
 from routes.manage import manage_route
 from core import app
 
+# подключение всех роутеров
 app.register_blueprint(user_router)
 app.register_blueprint(events_router)
 app.register_blueprint(join_router)

@@ -2,6 +2,7 @@ import sqlalchemy
 import database
 
 
+# модель присоединившихся пользователей
 class JoinedUsers(database.SqlAlchemyBase):
     __tablename__ = 'joined_users'
 

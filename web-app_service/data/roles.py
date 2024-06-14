@@ -2,6 +2,7 @@ import sqlalchemy
 import database
 
 
+# модель ролей на платформе
 class Role(database.SqlAlchemyBase):
     __tablename__ = "roles"
     role_id = sqlalchemy.Column(sqlalchemy.Integer,

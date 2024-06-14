@@ -8,6 +8,9 @@ from data.event_types import EventType
 
 
 def getEventTypes():
+    """
+
+    """
     current_day = datetime.now().date()
     request_to_redis = f'event-types-{current_day}'
     if not redis_client.get(request_to_redis):

@@ -3,6 +3,7 @@ import sqlalchemy
 import database
 
 
+# модель типов событий
 class EventType(database.SqlAlchemyBase):
     __tablename__ = 'event_types'
 

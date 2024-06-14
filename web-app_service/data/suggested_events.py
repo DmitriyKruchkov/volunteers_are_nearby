@@ -2,6 +2,7 @@ import sqlalchemy
 import database
 
 
+# модель предложенных новостей
 class SuggestedEvent(database.SqlAlchemyBase):
     __tablename__ = 'suggested_events'
 

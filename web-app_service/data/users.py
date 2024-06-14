@@ -4,6 +4,7 @@ import database
 import sqlalchemy
 
 
+# модель пользователя
 class User(database.SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
@@ -25,8 +26,10 @@ class User(database.SqlAlchemyBase, UserMixin):
     def __repr__(self):
         return ' '.join([self.name, self.email, self.nickname])
 
+    # функция установки зашифрованного пароля
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
 
+    # функция проверки соответствия паролей
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)

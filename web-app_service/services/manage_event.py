@@ -6,6 +6,9 @@ from config import EVENT_DATA_DIR
 
 
 def loadEventsUpdates(event, form):
+    """
+        Загружается обновления для события
+        """
     db_sess = create_session()
     updated_data_to_load = {}
     attributes = ["event_name", "date_of_start", "address", "about"]
@@ -23,6 +26,9 @@ def loadEventsUpdates(event, form):
 
 
 def addSuggestion(suggestion_id):
+    """
+    Добавляет предложенную новость в  основные новости
+    """
     with create_session() as db_sess:
         suggestion = db_sess.query(SuggestedEvent).filter(
             SuggestedEvent.id == suggestion_id
@@ -41,6 +47,9 @@ def addSuggestion(suggestion_id):
 
 
 def deleteSuggestion(suggestion_id):
+    """
+        Удаляет предложенную новость
+    """
     with create_session() as db_sess:
         suggestion = db_sess.query(SuggestedEvent).filter(
             SuggestedEvent.id == suggestion_id

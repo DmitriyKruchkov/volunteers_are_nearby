@@ -4,7 +4,7 @@ from wtforms import StringField, TextAreaField, SubmitField, FileField, SelectFi
 from wtforms.validators import DataRequired
 from form.custom_validators import file_ext_validator
 
-
+# Класс формы для предложенных новостей
 class SuggestedEventForm(FlaskForm):
     id_event_type = SelectField('Тип события')
     event_name = StringField('Название события', validators=[DataRequired()])
@@ -14,5 +14,6 @@ class SuggestedEventForm(FlaskForm):
     about = TextAreaField("Описание события")
     submit = SubmitField('Отправить')
 
+    # Функция установки значений для селектора события
     def setup_select_field(self, elements):
         self.id_event_type.choices = elements

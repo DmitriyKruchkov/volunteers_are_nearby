@@ -1,6 +1,7 @@
 from wtforms import ValidationError
 
 
+# Функция валидации отправляемых картинок
 def file_ext_validator(ext):
     message = f"Расширение аватара должно быть: {', '.join(ext)}"
 

@@ -9,6 +9,12 @@ from database import create_session
 
 
 def getActualEvents():
+    """
+        Получение списка событий, дата начала которых не истекла.
+        Если такой запрос поступает впервые за день, то запрос кешируется в Redis.
+        В следующие разы список событий  забирается из Redis, а не самой базы данных.
+        Время существования записи определяется переменной REDIS_UPDATE_SECONDS.
+    """
     current_day = datetime.now().date()
     request_to_redis = f'actual-news-{current_day.strftime("%D")}'
     if not redis_client.get(request_to_redis):
@@ -32,6 +38,12 @@ def getActualEvents():
 
 
 def getEventByID(event_id):
+    """
+            Получение списка события по ID.
+            Если такой запрос поступает впервые, то запрос кешируется в Redis.
+            В следующие разы забирается из Redis, а не самой базы данных.
+            Время существования записи определяется переменной REDIS_UPDATE_SECONDS.
+        """
     db_sess = create_session()
     request_to_redis = f'event-{event_id}'
     if not redis_client.get(request_to_redis):
@@ -55,6 +67,12 @@ def getEventByID(event_id):
 
 
 def getAllEvents():
+    """
+        Получение списка ВСЕХ событий.
+        Если такой запрос поступает впервые за день, то запрос кешируется в Redis.
+        В следующие разы список событий  забирается из Redis, а не самой базы данных.
+        Время существования записи определяется переменной REDIS_UPDATE_SECONDS.
+    """
     current_day = datetime.now().date()
     request_to_redis = f'all-news-{current_day.strftime("%D")}'
     if not redis_client.get(request_to_redis):
@@ -79,6 +97,9 @@ def getAllEvents():
 
 
 def deleteEventByID(event_id):
+    """
+        Удаление события по его ID из БД
+        """
     with create_session() as db_sess:
         db_sess.query(Event).filter(Event.id == event_id).delete()
         db_sess.commit()

@@ -12,6 +12,9 @@ suggest_router = Blueprint("suggested_events", __name__)
 @suggest_router.route("/event/suggest", methods=["GET", "POST"])
 @login_required
 def create():
+    """
+    Предложение новости к основным через заполнение формы
+    """
     form = SuggestedEventForm()
     form.setup_select_field(getEventTypes())
     if form.validate_on_submit():

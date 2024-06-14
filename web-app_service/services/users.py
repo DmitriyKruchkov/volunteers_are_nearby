@@ -10,16 +10,40 @@ from database import create_session
 
 
 def getUserByEmail(email):
+    """
+
+    Args:
+        email: почта пользователя
+
+    Returns: Пользователь с такой почтой
+
+    """
     db_sess = create_session()
     return db_sess.query(User).filter(User.email == email).first()
 
 
 def getUserByID(user_id):
+    """
+
+    Args:
+        user_id: айди пользователя
+
+    Returns: Пользователь с таким айди
+
+    """
     db_sess = create_session()
     return db_sess.query(User).get(user_id)
 
 
 def load_user(user_id):
+    """
+    Функция авторизации пользователя, блокируется если 2>= предупреждений от администрации
+    Args:
+        user_id: айди пользователя
+
+    Returns: Разрешенный пользователь
+
+    """
     db_sess = create_session()
     user = db_sess.query(User).get(user_id)
     if user and user.warnings_count < 2:
@@ -27,6 +51,14 @@ def load_user(user_id):
 
 
 def privilege_mode(func):
+    '''
+
+    Args:
+        func: функция выдачи шаблона страницы
+
+    Returns: Декоратор для страницы, которая недоступна обычным пользователям
+
+    '''
     @wraps(func)
     def wrapper(*args, **kwargs):
         if current_user.mode_id not in [2, 3]:
@@ -37,6 +69,15 @@ def privilege_mode(func):
 
 
 def checkUsers(email, nickname):
+    '''
+
+    Args:
+        email:
+        nickname:
+
+    Returns: True/False - в зависимости от наличия пользователя в БД
+
+    '''
     db_sess = create_session()
     query = db_sess.query(User).filter((User.email == email) |
                                        (User.nickname == nickname)).first()
@@ -46,16 +87,21 @@ def checkUsers(email, nickname):
 
 
 def addUserFromForm(form):
+    '''
+    Добавляет нового пользователя в БД,
+     если не указана аватарка, то будет использована дефолтная
+    Args:
+        form: форма с сайта
+
+
+    '''
     db_sess = create_session()
-    mode = 1
-    if form.nickname.data == "root":
-        mode = 3
     user = User(
         surname=form.surname.data,
         name=form.name.data,
         nickname=form.nickname.data,
         email=form.email.data,
-        mode_id=mode,
+        mode_id=1,
         photo=download_picture(form.photo.data),
         about=form.about.data
     )
@@ -66,6 +112,15 @@ def addUserFromForm(form):
 
 
 def download_picture(f, parent_dir=USER_DATA_DIR):
+    '''
+    Функция сохранения аватарки события/пользователя
+    Args:
+        f: файл
+        parent_dir: родительская папка для изображения
+
+    Returns: Путь до сохраненной картинки
+
+    '''
     filename = secure_filename(f.filename)
     if filename:
         if not os.path.exists(os.path.join('static', parent_dir)):
@@ -81,6 +136,13 @@ def download_picture(f, parent_dir=USER_DATA_DIR):
 
 
 def create_random_dir_name(parent_dir):
+    '''
+
+    Args:
+        parent_dir: родительская папка
+
+    Returns: несуществующее рандомное название директории
+    '''
     len_of_hash = 16
     alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
     new_dir_name = ''.join(random.sample(alphabet, len_of_hash))
@@ -90,6 +152,11 @@ def create_random_dir_name(parent_dir):
 
 
 def loadNewData(form):
+    '''
+    Просматривает все обновленные значения и обновляет их в таблице
+    Args:
+        form: форма для обновления данных
+    '''
     db_sess = create_session()
     updated_data_to_load = {}
     for i in set(vars(form)) & set(vars(current_user)) ^ {"photo"}:
@@ -108,6 +175,11 @@ def loadNewData(form):
 
 
 def changePassword(form):
+    '''
+    Запись нового пароля пользователя в зашифрованном виде
+    Args:
+        form: форма для смены пароля
+    '''
     db_sess = create_session()
     user = db_sess.query(User).filter(User.id == current_user.id).first()
     if user.check_password(form.old_password.data):
@@ -120,6 +192,11 @@ def changePassword(form):
 
 
 def getUsers():
+    '''
+    Получение списка для панели управления пользователями. Выдает всех пользователей, чья роль меньше чем роль
+    управляющего (для модераторов только пользователи, для администраторов: пользователи и модераторы)
+    '''
+
     db_sess = create_session()
     users = db_sess.query(User).filter(User.mode_id < current_user.mode_id).all()
     db_sess.close()
@@ -127,6 +204,11 @@ def getUsers():
 
 
 def addWarning(user_id):
+    '''
+
+    Добавляет предупреждение пользователю
+
+    '''
     db_sess = create_session()
     user = db_sess.query(User).filter(
         User.id == user_id
@@ -143,6 +225,11 @@ def addWarning(user_id):
 
 
 def addForgiveness(user_id):
+    '''
+
+        Убирает предупреждение пользователю
+
+        '''
     db_sess = create_session()
     user = db_sess.query(User).filter(
         User.id == user_id
@@ -159,6 +246,9 @@ def addForgiveness(user_id):
 
 
 def userUpgrade(user_id):
+    '''
+        Добавляет права модератора пользователю
+        '''
     db_sess = create_session()
     user = db_sess.query(User).filter(
         User.id == user_id
@@ -175,6 +265,9 @@ def userUpgrade(user_id):
 
 
 def userDowngrade(user_id):
+    '''
+           Отбирает права модератора у пользователя
+           '''
     db_sess = create_session()
     user = db_sess.query(User).filter(
         User.id == user_id

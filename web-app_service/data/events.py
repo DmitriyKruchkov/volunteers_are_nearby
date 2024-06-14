@@ -1,9 +1,9 @@
 import sqlalchemy
 
-
 import database
 
 
+# модель событий
 class Event(database.SqlAlchemyBase):
     __tablename__ = 'events'
 

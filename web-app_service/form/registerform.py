@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired
 from form.custom_validators import file_ext_validator
 
 
+# Класс формы для регистрации
 class RegisterForm(FlaskForm):
     surname = StringField('Фамилия', validators=[DataRequired()])
     name = StringField('Имя', validators=[DataRequired()])

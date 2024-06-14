@@ -6,6 +6,9 @@ from database import create_session
 
 
 def addSuggestedEventFromForm(form):
+    """
+        Добавляет предложенную новость из формы в предложку
+        """
     db_sess = create_session()
     suggested_event = SuggestedEvent(
         id_event_type=form.id_event_type.data,
@@ -22,5 +25,8 @@ def addSuggestedEventFromForm(form):
 
 
 def getSuggestedEvents():
+    """
+    Returns: Все предложенные новости
+    """
     with create_session() as db_sess:
         return db_sess.query(SuggestedEvent).all()

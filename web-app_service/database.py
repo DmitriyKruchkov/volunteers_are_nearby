@@ -11,7 +11,7 @@ SqlAlchemyBase = orm.declarative_base()
 
 __factory = None
 
-
+# подключение сервиса к PostgreSQL
 def global_init():
     global __factory
     if __factory:
