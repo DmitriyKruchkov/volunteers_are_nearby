@@ -17,4 +17,5 @@ def template_to_json(file_path):
 if __name__ == "__main__":
     template_to_json("input_db.json.template")
     time.sleep(10)
-    os.system("python3 /pgadmin4/setup.py load-servers input_db.json --user $PGADMIN_DEFAULT_EMAIL")
+    user = os.getenv("PGADMIN_DEFAULT_EMAIL")
+    os.system(f"python3 /pgadmin4/setup.py load-servers input_db.json --user {user}")
