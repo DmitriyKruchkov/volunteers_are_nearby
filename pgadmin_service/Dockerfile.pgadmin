@@ -2,4 +2,4 @@ FROM dpage/pgadmin4
 
 COPY db_adder.py /tmp/db_adder.py
 COPY input_db.json.template /tmp/input_db.json.template
-CMD ["/bin/sh", "-c", ". /venv/bin/activate && python3 /tmp/db_adder.py"]
+CMD ["/bin/sh", "-c", ". /venv/bin/activate && python3 /tmp/db_adder.py && /entrypoint.sh"]
