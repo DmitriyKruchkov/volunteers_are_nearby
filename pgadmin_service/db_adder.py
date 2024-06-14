@@ -11,7 +11,7 @@ def template_to_json(file_path):
             config_str = config_str.replace(f"${key}", value)
         else:
             config_str = config_str.replace(f"${key}", f'"{value}"')
-    open("input_db.json", mode='w').write(config_str)
+    open("/tmp/input_db.json", mode='w').write(config_str)
 
 
 if __name__ == "__main__":
