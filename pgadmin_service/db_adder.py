@@ -7,11 +7,14 @@ def template_to_json(file_path):
         config_str = file.read()
     # Замена переменных среды
     for key, value in os.environ.items():
-        config_str = config_str.replace(f"${key}", value)
+        if key == "PORT":
+            config_str = config_str.replace(f"${key}", value)
+        else:
+            config_str = config_str.replace(f"${key}", f'"{value}"')
     open("input_db.json", mode='w').write(config_str)
 
 
 if __name__ == "__main__":
     template_to_json("input_db.json.template")
-    time.sleep(20)
+    time.sleep(10)
     os.system("python3 /pgadmin4/setup.py load-servers input_db.json --user $PGADMIN_DEFAULT_EMAIL")
