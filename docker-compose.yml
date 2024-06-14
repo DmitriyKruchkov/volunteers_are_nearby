@@ -86,6 +86,8 @@ services:
       - DB_PASS=${DB_PASS}
     ports:
       - "5200:80"
+    depends_on:
+      - postgres
     networks:
       - internet
 
