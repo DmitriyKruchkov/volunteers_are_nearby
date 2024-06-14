@@ -7,7 +7,7 @@ def template_to_json(file_path):
         config_str = file.read()
     # Замена переменных среды
     for key, value in os.environ.items():
-        if key == "PORT":
+        if key == "DB_PORT":
             config_str = config_str.replace(f"${key}", value)
         else:
             config_str = config_str.replace(f"${key}", f'"{value}"')
