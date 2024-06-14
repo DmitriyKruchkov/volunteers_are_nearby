@@ -1,7 +1,7 @@
 FROM python:3.11.9
 
 
-COPY ./web-app_service/ ./web_app
+COPY ./ ./web_app
 WORKDIR /web_app
 EXPOSE 5000
 RUN pip install -r requirements.txt
