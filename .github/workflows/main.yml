@@ -60,7 +60,7 @@ jobs:
   documentation:
     runs-on: self-hosted
     needs: [testing, linting]
-    if: ${{  github.ref == 'refs/heads/main' }}
+    #   if: ${{  github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

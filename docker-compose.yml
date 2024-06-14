@@ -47,7 +47,7 @@ services:
 
   document-service:
     container_name: nginx
-    image: nginx:alpine
+    image: nginx
     ports:
       - "5050:80"
     volumes:
