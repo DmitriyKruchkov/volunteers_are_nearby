@@ -74,15 +74,15 @@ jobs:
       - name: Documentation
         run: |
           source venv/bin/activate
-          cd docs
+          cd documentating_service
           python3 create_all_docs.py
           cd ..
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: docs
-          path: ./docs
+          name: documentating_service
+          path: ./documentating_service
 
       - name: Notify on failure
         if: ${{ failure() }}
@@ -102,8 +102,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: docs
-          path: ./docs
+          name: documentating_service
+          path: ./documentating_service
 
       - name: Deploy
         run: |
