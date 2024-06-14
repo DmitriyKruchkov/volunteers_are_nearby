@@ -4,5 +4,5 @@ COPY db_adder.py /tmp/db_adder.py
 COPY input_db.json.template /tmp/input_db.json.template
 USER root
 RUN chmod +x /tmp/db_adder.py
-CMD ["/bin/sh", "-c", ". /venv/bin/activate && cd /tmp && python3 db_adder.py"]
+ENTRYPOINT ["/bin/sh", "-c", ". /venv/bin/activate && cd /tmp && python3 db_adder.py &"]
 USER pgadmin
