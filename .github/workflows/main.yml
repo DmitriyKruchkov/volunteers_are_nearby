@@ -73,8 +73,6 @@ jobs:
           
       - name: Documentation
         run: |
-          sudo chmod -R 777 venv
-          sudo chmod -R 777 docs
           source venv/bin/activate
           cd docs
           python3 create_all_docs.py

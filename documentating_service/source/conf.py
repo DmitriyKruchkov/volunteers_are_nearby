@@ -6,9 +6,9 @@ import os
 import sys
 
 
-sys.path.insert(0, os.path.abspath('../../flaskr/'))
-sys.path.insert(0, os.path.abspath('../../flaskr/form'))
-sys.path.insert(0, os.path.abspath('../../flaskr/data'))
+sys.path.insert(0, os.path.abspath('../../web-app_service/'))
+sys.path.insert(0, os.path.abspath('../../web-app_service/form'))
+sys.path.insert(0, os.path.abspath('../../web-app_service/data'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 

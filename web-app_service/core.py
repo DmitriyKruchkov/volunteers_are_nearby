@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from redis import Redis
-from config import SECRET_KEY, REDIS_HOST, REDIS_PORT, DB_PATH
+from config import SECRET_KEY, REDIS_HOST, REDIS_PORT
 from services.users import load_user
 import database
 
