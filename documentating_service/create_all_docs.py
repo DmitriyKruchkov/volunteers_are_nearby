@@ -12,7 +12,7 @@ def create_all_docs(path):
         if os.path.isdir(os.path.join(path, elem)) and elem not in ignore_dirs:
             directories.append(elem)
     for i in directories:
-        os.system(f"sphinx-apidoc -f -o ../docs/source {os.path.join(path, i)}")
+        os.system(f"sphinx-apidoc -f -o ../documentating_service/source {os.path.join(path, i)}")
     os.system("make html")
 
 
