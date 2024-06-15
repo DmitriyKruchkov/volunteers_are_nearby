@@ -1,30 +1,42 @@
 version: "3.9"
 services:
-  flask-app:
-    container_name: flask_app
+  web-app:
+    container_name: web-app
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./web-app_service/
+      dockerfile: Dockerfile.web-app
     ports:
       - "5000:5000"
     environment:
-      - SURNAME=${SURNAME}
-      - NAME=${NAME}
-      - NICKNAME=${NICKNAME}
-      - EMAIL=${EMAIL}
-      - PASSWORD=${PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - HOST=${HOST}
+      - PORT=${PORT}
+      - DEBUG=${DEBUG}
+      - USER_DATA_DIR=${USER_DATA_DIR}
+      - EVENT_DATA_DIR=${EVENT_DATA_DIR}
+      - NON_AVATAR_PATH=${NON_AVATAR_PATH}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_UPDATE_SECONDS=${REDIS_UPDATE_SECONDS}
+      - MAILER_HOST=${MAILER_HOST}
+      - MAILER_PORT=${MAILER_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
     networks:
       - internet
     depends_on:
       - caching-service
       - mailer-service
+      - postgres
+
   mailer-service:
     container_name: mailer
     build:
       context: mailer_service/
       dockerfile: Dockerfile
-    ports:
-      - "5150:5150"
     environment:
       - SMTP_SERVER=${SMTP_SERVER}
       - SMTP_PORT=${SMTP_PORT}
@@ -32,20 +44,45 @@ services:
       - SMTP_PASSWORD=${SMTP_PASSWORD}
     networks:
       - internet
-  document-service:
-    container_name: nginx
-    image: nginx:alpine
-    ports:
-      - "5050:80"
-    volumes:
-      - ./docs/build/html/:/usr/share/nginx/html:ro
+
   caching-service:
     container_name: redis
-    image: redis:alpine
-    ports:
-      - "5100:6379"
+    image: redis:7.4-rc1-alpine3.20
     networks:
       - internet
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - internet
+
+  pgadmin:
+    container_name: pgadmin_container
+    build:
+      context: ./pgadmin_service/
+      dockerfile: Dockerfile.pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${DB_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${DB_PASS}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    ports:
+      - "5200:80"
+    depends_on:
+      - postgres
+    networks:
+      - internet
+
 networks:
   internet:
     name: internet

@@ -1,0 +1,8 @@
+FROM dpage/pgadmin4
+
+COPY db_adder.py /tmp/db_adder.py
+COPY input_db.json.template /tmp/input_db.json.template
+COPY start.sh /tmp/start.sh
+USER root
+RUN chmod 777 /tmp/start.sh
+ENTRYPOINT ["/tmp/start.sh"]

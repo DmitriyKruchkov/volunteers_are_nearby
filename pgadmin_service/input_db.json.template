@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Volunteers",
+            "Group": "Servers",
+            "Port": $DB_PORT,
+            "Username": $DB_USER,
+            "Host": $DB_HOST,
+            "SSLMode": "prefer",
+            "MaintenanceDB": $DB_NAME
+        }
+    }
+}
