@@ -63,12 +63,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: documentating_service
-          path: ./documentating_service
-
       - name: Deploy
         run: |
           docker-compose down
