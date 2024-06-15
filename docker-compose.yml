@@ -45,14 +45,6 @@ services:
     networks:
       - internet
 
-  document-service:
-    container_name: nginx
-    image: nginx
-    ports:
-      - "5050:80"
-    volumes:
-      - ./documentating_service/build/html/:/usr/share/nginx/html:ro
-
   caching-service:
     container_name: redis
     image: redis:7.4-rc1-alpine3.20

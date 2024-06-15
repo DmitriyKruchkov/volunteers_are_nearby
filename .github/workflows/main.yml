@@ -55,46 +55,9 @@ jobs:
           echo "Pipeline failed on $GITHUB_JOB.❌" > log-CI
           sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
 
-      
-
-  documentation:
-    runs-on: self-hosted
-    needs: [testing, linting]
-    #   if: ${{  github.ref == 'refs/heads/main' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download venv
-        uses: actions/download-artifact@v4
-        with:
-          name: venv
-          path: ./venv
-          
-      - name: Documentation
-        run: |
-          sudo chmod -R 777 venv
-          source venv/bin/activate
-          cd documentating_service
-          python3 create_all_docs.py
-          cd ..
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: documentating_service
-          path: ./documentating_service
-
-      - name: Notify on failure
-        if: ${{ failure() }}
-        run: |
-          echo "Pipeline failed on $GITHUB_JOB.❌" > log-CI
-          sh ci-notify.sh log-CI $GITHUB_REF_NAME $GITHUB_REPOSITORY
-
-
   deploy:
     runs-on: self-hosted
-    needs: [testing, linting, documentation]
+    needs: [testing, linting]
     if: ${{  github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout code
