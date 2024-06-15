@@ -15,23 +15,23 @@
 ![Alt text](./images/infrastructure.png)
 
 # Используемые технологии в проекте:
- ##### Flask
- ##### FastAPI
- #### Pytest
- #### SMTPlib
- #### Gitlab CI
- #### Docker & docker-compose
- #### Poetry
- #### ORM (Sqlalchemy)
- #### PostgreSQL
- #### Pgadmin4
- #### API Telegram
- #### Python
- #### Bash
- #### HTML
- #### CSS
- #### Redis
- #### Poetry
+ * Flask
+ * FastAPI
+ * Pytest
+ * SMTPlib
+ * Gitlab CI
+ * Docker & docker-compose
+ * Poetry
+ * ORM (Sqlalchemy)
+ * PostgreSQL
+ * Pgadmin4
+ * API Telegram
+ * Python
+ * Bash
+ * HTML
+ * CSS
+ * Redis
+ * Poetry
 
 # Состав проекта
 Данное приложение состоит из 5 микросервисов и CI/CD-пайплайна описанных ниже.
