@@ -44,6 +44,7 @@ jobs:
 
       - name: Setup Python environment
         run: |
+          sudo chmod -R 777 venv
           source venv/bin/activate
           python3 -m pytest
           echo "$GITHUB_JOB is ok" >> ./log-CI
@@ -72,8 +73,8 @@ jobs:
           
       - name: Documentation
         run: |
+          sudo chmod -R 777 venv
           source venv/bin/activate
-          python3 -m pip install click
           cd documentating_service
           python3 create_all_docs.py
           cd ..
