@@ -3,10 +3,10 @@ import click
 
 
 @click.command()
-@click.option("--path", default="../flaskr",
-              help="Зath to the directory you want to document")
+@click.option("--path", default="../web-app_service",
+              help="path to the directory you want to document")
 def create_all_docs(path):
-    ignore_dirs = ["__pycache__", "db", "templates", "static"]
+    ignore_dirs = ["__pycache__", "templates", "static"]
     directories = []
     for elem in os.listdir(path):
         if os.path.isdir(os.path.join(path, elem)) and elem not in ignore_dirs:
