@@ -91,7 +91,7 @@ def account_info():
     role = getRole(current_user.mode_id)
     return render_template(
         template_name_or_list="account_info.html",
-        role_name=role.name
+        role_name=role
     )
 
 
