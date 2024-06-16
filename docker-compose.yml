@@ -25,6 +25,8 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
+    volumes:
+      - /var/opt/web_app/users_avatars:/web_app/static/users_avatars
     networks:
       - internet
     depends_on:
